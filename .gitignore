@@ -65,3 +65,7 @@ Thumbs.db
 # Temporary files
 tmp/
 temp/
+
+# Prisma
+*.db
+*.db-journal
