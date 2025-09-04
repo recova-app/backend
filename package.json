@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --exec ts-node ./src/core/server.ts"
+    "dev": "nodemon --exec npx tsx ./src/core/server.ts"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,8 @@
   "homepage": "https://github.com/recova-app/backend#readme",
   "dependencies": {
     "dotenv": "^17.2.2",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "tsx": "^4.20.5"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
