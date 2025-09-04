@@ -5,7 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --exec npx tsx ./src/core/server.ts"
+    "dev": "nodemon --exec npx tsx ./src/core/server.ts",
+    "postinstall": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:reset": "prisma migrate reset",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio"
   },
   "repository": {
     "type": "git",
@@ -20,6 +26,7 @@
   },
   "homepage": "https://github.com/recova-app/backend#readme",
   "dependencies": {
+    "@prisma/client": "^6.15.0",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
     "tsx": "^4.20.5"
@@ -29,6 +36,7 @@
     "@types/node": "^24.3.1",
     "nodemon": "^3.1.10",
     "prettier": "^3.6.2",
+    "prisma": "^6.15.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   }
