@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String    @id @default(uuid())
+  googleId    String    @unique
+  email       String    @unique
+  nickname    String
+  userWhy     String?
+  checkinTime DateTime? @db.Time
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  streaks  Streak[]
+  checkins Checkin[]
+  journals Journal[]
+  posts    CommunityPost[]
+  comments CommunityComment[]
+  profile  UserProfile?
+}
+
+model Streak {
+  id        String    @id @default(uuid())
+  startDate DateTime
+  endDate   DateTime?
+  isActive  Boolean   @default(true)
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model Checkin {
+  id           String   @id @default(uuid())
+  checkinDate  DateTime @db.Date
+  mood         String
+  isSuccessful Boolean
+  createdAt    DateTime @default(now())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+
+  // Relation
+  journal Journal?
+
+  @@index([userId])
+}
+
+model Journal {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  checkinId String?  @unique
+  checkin   Checkin? @relation(fields: [checkinId], references: [id])
+
+  @@index([userId])
+}
+
+model CommunityPost {
+  id           String             @id @default(uuid())
+  title        String?
+  content      String
+  commentCount Int                @default(0)
+  likeCount    Int                @default(0)
+  createdAt    DateTime           @default(now())
+  userId       String
+  user         User               @relation(fields: [userId], references: [id])
+  comments     CommunityComment[]
+
+  @@index([userId])
+}
+
+model CommunityComment {
+  id        String        @id @default(uuid())
+  content   String
+  createdAt DateTime      @default(now())
+  userId    String
+  user      User          @relation(fields: [userId], references: [id])
+  postId    String
+  post      CommunityPost @relation(fields: [postId], references: [id])
+
+  @@index([userId, postId])
+}
+
+model EducationContent {
+  id           String  @id @default(uuid())
+  title        String
+  description  String?
+  url          String
+  thumbnailUrl String?
+  category     String
+}
+
+model UserProfile {
+  id              String   @id @default(uuid())
+  answers         Json
+  dependencyLevel String
+  aiSummary       String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id])
+}
