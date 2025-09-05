@@ -37,8 +37,16 @@ export async function getMeHandler(req: Request, res: Response) {
 
 export async function updateUserSettingsHandler(req: Request, res: Response) {
   try {
-    const userId = req.user?.id as string;
+    const userId = req.user?.id;
     const dataToUpdate = req.body;
+
+    if (!userId) {
+      return res.status(401).json({
+        message: 'Unauthorized',
+        data: null,
+        error: 'User ID not found in request',
+      });
+    }
 
     const updatedUser = await updateUserSettings(userId, dataToUpdate);
 

@@ -37,7 +37,11 @@ export async function updateUserSettings(
       dataToUpdate.userWhy = data.userWhy;
     }
     if (data.checkinTime) {
-      dataToUpdate.checkinTime = new Date(`1970-01-01T${data.checkinTime}:00.000Z`);
+      const parsedDate = new Date(data.checkinTime);
+      if (isNaN(parsedDate.getTime())) {
+        throw new Error('Invalid checkinTime format');
+      }
+      dataToUpdate.checkinTime = parsedDate;
     }
 
     const updatedUser = await prisma.user.update({
