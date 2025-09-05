@@ -48,12 +48,5 @@
     "esm": true
   },
   "include": ["src/**/*"],
-  "exclude": [
-    "node_modules",
-    "dist/**/*",
-    "test/**/*",
-    "**/*spec.ts",
-    "prisma/migrations/**/*",
-    "node_modules/@prisma/engines/**/*"
-  ]
+  "exclude": ["node_modules", "dist/**/*", "test/**/*", "**/*spec.ts", "prisma/**/*"]
 }
