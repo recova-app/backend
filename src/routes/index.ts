@@ -4,6 +4,7 @@ import userRoutes from '../api/users/user.routes.js';
 import routineRoutes from '../api/routine/routine.routes.js';
 import journalRoutes from '../api/journals/journal.routes.js';
 import communityRoutes from '../api/community/community.routes.js';
+import aiRoutes from '../api/ai/ai.routes.js';
 
 const router = Router();
 
@@ -12,5 +13,6 @@ router.use('/users', userRoutes);
 router.use('/routine', routineRoutes);
 router.use('/journals', journalRoutes);
 router.use('/community', communityRoutes);
+router.use('/ai', aiRoutes);
 
 export default router;

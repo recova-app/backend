@@ -11,6 +11,9 @@ const config = {
   google: {
     clientId: process.env.GOOGLE_CLIENT_ID || '',
   },
+  gemini: {
+    apiKey: process.env.GEMINI_API_KEY || '',
+  },
 };
 
 export default config;
