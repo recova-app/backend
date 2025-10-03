@@ -1,62 +1,26 @@
 import type { Request, Response } from 'express';
 import { createJournalEntry, findJournalsByUserId } from './journal.service.js';
+import { asyncHandler } from '../../core/asyncHandler.js';
+import { errorResponse, successResponse } from '../../core/response.js';
 
-export async function createJournalHandler(req: Request, res: Response) {
-  try {
-    const userId = req.user?.id;
-    const { content } = req.body;
+export const createJournalHandler = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user?.id;
+  const { content } = req.body;
 
-    if (!userId) {
-      return res.status(401).json({
-        message: 'Unauthorized',
-        data: null,
-        error: 'User ID not found in request',
-      });
-    }
-
-    const journal = await createJournalEntry(userId, content);
-
-    return res.status(201).json({
-      message: 'Journal entry created successfully',
-      data: journal,
-      error: null,
-    });
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Internal Server Error';
-
-    return res.status(500).json({
-      message: 'Failed to create journal entry',
-      data: null,
-      error: errorMessage,
-    });
+  if (!userId) {
+    return errorResponse(res, 401, 'Unauthorized', 'User ID not found in request');
   }
-}
 
-export async function getJournalsHandler(req: Request, res: Response) {
-  try {
-    const userId = req.user?.id;
-    if (!userId) {
-      return res.status(401).json({
-        message: 'Unauthorized',
-        data: null,
-        error: 'User ID not found in request',
-      });
-    }
+  const journal = await createJournalEntry(userId, content);
+  return successResponse(res, 201, 'Journal entry created successfully', journal);
+});
 
-    const journals = await findJournalsByUserId(userId);
-
-    return res.status(200).json({
-      message: 'Journals fetched successfully',
-      data: journals,
-      error: null,
-    });
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Internal Server Error';
-
-    return res.status(500).json({
-      message: 'Failed to fetch journal entries',
-      data: null,
-      error: errorMessage,
-    });
+export const getJournalsHandler = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user?.id;
+  if (!userId) {
+    return errorResponse(res, 401, 'Unauthorized', 'User ID not found in request');
   }
-}
+
+  const journals = await findJournalsByUserId(userId);
+  return successResponse(res, 200, 'Journals fetched successfully', journals);
+});
