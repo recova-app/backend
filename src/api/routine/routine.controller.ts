@@ -1,70 +1,26 @@
 import type { Request, Response } from 'express';
 import { getUserStatistics, processDailyCheckin } from './routine.service.js';
+import { asyncHandler } from '../../core/asyncHandler.js';
+import { errorResponse, successResponse } from '../../core/response.js';
 
-export async function dailyCheckinHandler(req: Request, res: Response) {
-  try {
-    const userId = req.user?.id;
-    const checkinData = req.body;
+export const dailyCheckinHandler = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user?.id;
+  const checkinData = req.body;
 
-    if (!userId) {
-      return res.status(401).json({
-        message: 'Unauthorized',
-        data: null,
-        error: 'User ID not found in request',
-      });
-    }
-
-    const checkinResult = await processDailyCheckin(userId, checkinData);
-
-    return res.status(200).json({
-      message: 'Check-in successful',
-      data: checkinResult,
-      error: null,
-    });
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Internal Server Error';
-
-    if (errorMessage.includes('already checked in')) {
-      return res.status(409).json({
-        message: errorMessage,
-        data: null,
-        error: 'Duplicate entry',
-      });
-    }
-
-    return res.status(500).json({
-      message: 'Failed to process check-in',
-      data: null,
-      error: errorMessage,
-    });
+  if (!userId) {
+    return errorResponse(res, 401, 'Unauthorized', 'User ID not found in request');
   }
-}
 
-export async function getStatisticsHandler(req: Request, res: Response) {
-  try {
-    const userId = req.user?.id;
-    if (!userId) {
-      return res.status(401).json({
-        message: 'Unauthorized',
-        data: null,
-        error: 'User ID not found in request',
-      });
-    }
+  const checkinResult = await processDailyCheckin(userId, checkinData);
+  return successResponse(res, 200, 'Check-in successful', checkinResult);
+});
 
-    const statistics = await getUserStatistics(userId);
-
-    return res.status(200).json({
-      message: 'Statistics fetched successfully',
-      data: statistics,
-      error: null,
-    });
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Internal Server Error';
-
-    return res.status(500).json({
-      message: 'Failed to fetch statistics',
-      data: null,
-      error: errorMessage,
-    });
+export const getStatisticsHandler = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user?.id;
+  if (!userId) {
+    return errorResponse(res, 401, 'Unauthorized', 'User ID not found in request');
   }
-}
+
+  const statistics = await getUserStatistics(userId);
+  return successResponse(res, 200, 'Statistics fetched successfully', statistics);
+});

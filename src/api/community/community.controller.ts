@@ -1,124 +1,47 @@
 import type { Request, Response } from 'express';
 import { addLikeToPost, createComment, createPost, findAllPosts } from './community.service.js';
+import { asyncHandler } from '../../core/asyncHandler.js';
+import { errorResponse, successResponse } from '../../core/response.js';
 
-export async function createPostHandler(req: Request, res: Response) {
-  try {
-    const userId = req.user?.id;
-    const postData = req.body;
+export const createPostHandler = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user?.id;
+  const postData = req.body;
 
-    if (!userId) {
-      return res.status(401).json({
-        message: 'Unauthorized',
-        data: null,
-        error: 'User ID not found in request',
-      });
-    }
-
-    const post = await createPost(userId, postData);
-
-    return res.status(201).json({
-      message: 'Post created successfully',
-      data: post,
-      error: null,
-    });
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Internal Server Error';
-
-    return res.status(500).json({
-      message: 'Failed to create post',
-      data: null,
-      error: errorMessage,
-    });
+  if (!userId) {
+    return errorResponse(res, 401, 'Unauthorized', 'User ID not found in request');
   }
-}
 
-export async function getPostsHandler(req: Request, res: Response) {
-  try {
-    const posts = await findAllPosts();
+  const post = await createPost(userId, postData);
+  return successResponse(res, 201, 'Post created successfully', post);
+});
 
-    return res.status(200).json({
-      message: 'Posts fetched successfully',
-      data: posts,
-      error: null,
-    });
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Internal Server Error';
+export const getPostsHandler = asyncHandler(async (req: Request, res: Response) => {
+  const posts = await findAllPosts();
+  return successResponse(res, 200, 'Posts fetched successfully', posts);
+});
 
-    return res.status(500).json({
-      message: 'Failed to fetch posts',
-      data: null,
-      error: errorMessage,
-    });
+export const createCommentHandler = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user?.id;
+  const { postId } = req.params;
+  const { content } = req.body;
+
+  if (!userId) {
+    return errorResponse(res, 401, 'Unauthorized', 'User ID not found in request');
   }
-}
-
-export async function createCommentHandler(req: Request, res: Response) {
-  try {
-    const userId = req.user?.id;
-    const { postId } = req.params;
-    const { content } = req.body;
-
-    if (!userId) {
-      return res.status(401).json({
-        message: 'Unauthorized',
-        data: null,
-        error: 'User ID not found in request',
-      });
-    }
-
-    if (!postId) {
-      return res.status(400).json({
-        message: 'Bad Request',
-        data: null,
-        error: 'Post ID is required',
-      });
-    }
-
-    const comment = await createComment(userId, postId, content);
-
-    return res.status(201).json({
-      message: 'Comment created successfully',
-      data: comment,
-      error: null,
-    });
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Internal Server Error';
-
-    return res.status(500).json({
-      message: 'Failed to create comment',
-      data: null,
-      error: errorMessage,
-    });
+  if (!postId) {
+    return errorResponse(res, 400, 'Bad Request', 'Post ID is required');
   }
-}
 
-export async function addLikeHandler(req: Request, res: Response) {
-  try {
-    const { postId } = req.params;
-    if (!postId) {
-      return res.status(400).json({
-        message: 'Bad Request',
-        data: null,
-        error: 'Post ID is required',
-      });
-    }
+  const comment = await createComment(userId, postId, content);
+  return successResponse(res, 201, 'Comment created successfully', comment);
+});
 
-    const post = await addLikeToPost(postId);
-
-    return res.status(200).json({
-      message: 'Post liked successfully',
-      data: {
-        likeCount: post.likeCount,
-      },
-      error: null,
-    });
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Internal Server Error';
-
-    return res.status(500).json({
-      message: 'Failed to like post',
-      data: null,
-      error: errorMessage,
-    });
+export const addLikeHandler = asyncHandler(async (req: Request, res: Response) => {
+  const { postId } = req.params;
+  if (!postId) {
+    return errorResponse(res, 400, 'Bad Request', 'Post ID is required');
   }
-}
+
+  const post = await addLikeToPost(postId);
+  return successResponse(res, 200, 'Post liked successfully', { likeCount: post.likeCount });
+});
