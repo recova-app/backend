@@ -5,14 +5,15 @@ Proyek ini menyediakan layanan backend untuk aplikasi **Recova**, yang dirancang
 
 ## 🚀 Fitur Utama
 
-- 🔐 **Autentikasi Pengguna** - Login aman menggunakan Google OAuth & JWT.
-- 👤 **Manajemen Profil** - Atur profil (nama panggilan, alasan pemulihan, waktu check-in harian).
-- 📆 **Check-in Harian** - Catat mood & komitmen setiap hari.
-- 🔥 **Pelacakan Streak** - Hitung streak harian untuk menjaga motivasi.
-- 📓 **Jurnal Pribadi** - Simpan entri jurnal refleksi perjalanan.
-- 📊 **Statistik Pengguna** - Lihat streak saat ini, streak terpanjang, dan total check-in.
-- 🏘️ **Komunitas** - Posting, komentar, dan interaksi dengan sesama pengguna.
-- 📚 **Konten Edukasi** - Konten untuk mendukung perjalanan pemulihan.
+- **Autentikasi Pengguna** - Login aman menggunakan Google OAuth & JWT.
+- **Manajemen Profil** - Atur profil (nama panggilan, alasan pemulihan, waktu check-in harian).
+- **Check-in Harian** - Catat mood & komitmen setiap hari.
+- **Pelacakan Streak** - Hitung streak harian untuk menjaga motivasi.
+- **Jurnal Pribadi** - Simpan entri jurnal refleksi perjalanan.
+- **Statistik Pengguna** - Lihat streak saat ini, streak terpanjang, dan total check-in.
+- **Komunitas** - Posting, komentar, dan interaksi dengan sesama pengguna.
+- **Konten Edukasi** - Konten untuk mendukung perjalanan pemulihan.
+- **AI Coach** - Pendamping virtual yang memberikan dukungan emosional dan motivasi.
 
 ## 🛠️ Teknologi yang Digunakan
 
@@ -21,6 +22,7 @@ Proyek ini menyediakan layanan backend untuk aplikasi **Recova**, yang dirancang
 - **Bahasa**: [TypeScript](https://www.typescriptlang.org/)
 - **Database**: [PostgreSQL](https://www.postgresql.org/)
 - **ORM**: [Prisma](https://www.prisma.io/)
+- **AI**: [Google Gemini](https://ai.google.dev/)
 - **Validasi**: [Zod](https://zod.dev/)
 - **Autentikasi**: JWT & Google OAuth
 
@@ -61,6 +63,7 @@ Sebelum mulai, pastikan sudah install:
    DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
    JWT_SECRET="YOUR_RANDOM_SECRET_HERE"
    GOOGLE_CLIENT_ID="YOUR_GOOGLE_CLIENT_ID_HERE"
+   GEMINI_API_KEY="YOUR_GEMINI_API_KEY_HERE"
    ```
 
 4. **Migrasi database**
@@ -99,7 +102,8 @@ npm start
 
 ```
 src/
-├── api/                # Modul API (auth, users, journals, community, dll.)
+├── api/                # Modul API (auth, users, journals, dll.)
+│   ├── ai/
 │   ├── auth/
 │   ├── community/
 │   ├── journals/
@@ -117,26 +121,30 @@ src/
 
 Semua endpoint berada di bawah prefix: **`/api/v1`**
 
-### 🔐 Autentikasi
+### Autentikasi
 
 - `POST /auth/google` - Login / registrasi via Google Token.
 
-### 👤 Pengguna
+### Pengguna
 
 - `GET /users/me` - Ambil detail profil pengguna.
 - `PUT /users/settings` - Update pengaturan profil.
 
-### 📆 Rutinitas & Streak
+### AI
+
+- `POST /ai/ask-coach` - Kirim pesan ke AI Coach.
+
+### Rutinitas & Streak
 
 - `POST /routine/checkin` - Check-in harian.
 - `GET /routine/statistics` - Statistik (streak, dll).
 
-### 📓 Jurnal
+### Jurnal
 
 - `GET /journals` - Ambil semua entri jurnal.
 - `POST /journals` - Buat entri jurnal baru.
 
-### 🏘️ Komunitas
+### Komunitas
 
 - `GET /community` - Ambil semua postingan komunitas.
 - `POST /community` - Buat postingan baru.
