@@ -1,7 +1,12 @@
 import { differenceInDays } from 'date-fns';
 import prisma from '../../database/prisma.js';
 
-export async function processDailyCheckin(userId: string, mood: string, isSuccessful: boolean) {
+export async function processDailyCheckin(
+  userId: string,
+  data: { mood: string; isSuccessful: boolean; content?: string }
+) {
+  const { mood, isSuccessful, content } = data;
+
   return prisma.$transaction(async tx => {
     try {
       const today = new Date();
@@ -49,7 +54,7 @@ export async function processDailyCheckin(userId: string, mood: string, isSucces
         }
       }
 
-      await tx.checkin.create({
+      const newCheckin = await tx.checkin.create({
         data: {
           userId,
           checkinDate: new Date(),
@@ -57,6 +62,16 @@ export async function processDailyCheckin(userId: string, mood: string, isSucces
           isSuccessful,
         },
       });
+
+      if (content && content.trim() !== '') {
+        await tx.journal.create({
+          data: {
+            content,
+            userId,
+            checkinId: newCheckin.id,
+          },
+        });
+      }
 
       const latestStreak = await tx.streak.findFirst({
         where: {
