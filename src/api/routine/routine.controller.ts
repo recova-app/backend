@@ -4,7 +4,7 @@ import { getUserStatistics, processDailyCheckin } from './routine.service.js';
 export async function dailyCheckinHandler(req: Request, res: Response) {
   try {
     const userId = req.user?.id;
-    const { mood, isSuccessful } = req.body;
+    const checkinData = req.body;
 
     if (!userId) {
       return res.status(401).json({
@@ -14,7 +14,7 @@ export async function dailyCheckinHandler(req: Request, res: Response) {
       });
     }
 
-    const checkinResult = await processDailyCheckin(userId, mood, isSuccessful);
+    const checkinResult = await processDailyCheckin(userId, checkinData);
 
     return res.status(200).json({
       message: 'Check-in successful',
