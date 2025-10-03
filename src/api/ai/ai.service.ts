@@ -23,7 +23,7 @@ export async function getCoachResponse(userId: string, userMessage: string): Pro
     },
   });
   const streakDays = activeStreak
-    ? Math.floor((new Date().getTime() - activeStreak.startDate.getTime()) / (1000 * 3600 * 24))
+    ? Math.floor((new Date().getTime() - activeStreak.startDate.getTime()) / (1000 * 3600 * 24)) + 1
     : 0;
 
   const systemPrompt = generateCoachSystemPrompt({
