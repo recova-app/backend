@@ -46,3 +46,53 @@ export async function findAllPosts() {
     throw new Error('Failed to fetch community posts');
   }
 }
+
+export async function createComment(userId: string, postId: string, content: string) {
+  return prisma.$transaction(async tx => {
+    try {
+      const comment = await tx.communityComment.create({
+        data: {
+          userId,
+          postId,
+          content,
+        },
+      });
+
+      await tx.communityPost.update({
+        where: {
+          id: postId,
+        },
+        data: {
+          commentCount: {
+            increment: 1,
+          },
+        },
+      });
+
+      return comment;
+    } catch (error) {
+      console.error('Error creating comment:', error);
+      throw new Error('Failed to create comment');
+    }
+  });
+}
+
+export async function addLikeToPost(postId: string) {
+  try {
+    const updatedPost = await prisma.communityPost.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        likeCount: {
+          increment: 1,
+        },
+      },
+    });
+
+    return updatedPost;
+  } catch (error) {
+    console.error('Error adding like to post:', error);
+    throw new Error('Failed to add like to post');
+  }
+}
