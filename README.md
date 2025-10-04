@@ -106,6 +106,7 @@ src/
 │   ├── ai/
 │   ├── auth/
 │   ├── community/
+│   ├── education/
 │   ├── journals/
 │   ├── routine/
 │   └── users/
@@ -150,6 +151,10 @@ Semua endpoint berada di bawah prefix: **`/api/v1`**
 - `POST /community` - Buat postingan baru.
 - `POST /community/:postId/comments` - Tambah komentar ke postingan.
 - `POST /community/:postId/like` - Like postingan.
+
+### Edukasi
+
+- `GET /education` - Ambil semua konten edukasi.
 
 ## 🤝 Kontribusi
 
