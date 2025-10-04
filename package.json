@@ -14,7 +14,8 @@
     "db:deploy": "prisma migrate deploy",
     "db:reset": "prisma migrate reset",
     "db:push": "prisma db push",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "db:seed": "tsx src/database/seed/index.ts"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,7 @@
   },
   "homepage": "https://github.com/recova-app/backend#readme",
   "dependencies": {
+    "@faker-js/faker": "^10.0.0",
     "@google/generative-ai": "^0.24.1",
     "@prisma/client": "^6.15.0",
     "date-fns": "^4.1.0",
