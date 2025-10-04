@@ -89,6 +89,26 @@ npm run build
 npm start
 ```
 
+### 🌱 Database Seeding
+
+Proyek ini dilengkapi dengan mekanisme _seeding_ untuk mengisi database dengan data awal untuk keperluan development dan testing.
+
+Data yang di-seed meliputi:
+
+- **Users**: Pengguna dummy
+- **Profiles**: Profil untuk setiap pengguna
+- **Streaks**: Riwayat streak
+- **Check-ins**: Data check-in harian
+- **Journals**: Entri jurnal
+- **Community**: Postingan dan komentar di komunitas
+- **Education**: Konten edukasi
+
+Untuk menjalankan proses seeding, gunakan perintah:
+
+```bash
+npm run db:seed
+```
+
 ## 📜 Skrip NPM
 
 - `npm run dev` - Jalankan server development (hot reload).
@@ -97,6 +117,7 @@ npm start
 - `npm run format` - Format kode dengan Prettier.
 - `npm run db:migrate` - Jalankan migrasi database.
 - `npm run db:studio` - Buka Prisma Studio.
+- `npm run db:seed` - Isi database dengan data awal.
 
 ## 📂 Struktur Proyek
 
