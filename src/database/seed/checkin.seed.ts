@@ -12,7 +12,7 @@ export async function seedCheckins() {
         data: {
           checkinDate: day,
           mood: faker.helpers.arrayElement(['Happy', 'Sad', 'Relaxed', 'Anxious', 'Motivated']),
-          isSuccessful: faker.datatype.boolean(),
+          isSuccessful: faker.helpers.arrayElement([true, false]),
           userId: user.id,
         },
       });

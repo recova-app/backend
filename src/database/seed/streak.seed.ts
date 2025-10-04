@@ -13,10 +13,10 @@ export async function seedStreaks() {
       await prisma.streak.create({
         data: {
           startDate: start,
-          endDate: faker.datatype.boolean()
+          endDate: faker.helpers.arrayElement([true, false])
             ? subDays(new Date(), faker.number.int({ min: 1, max: 5 }))
             : null,
-          isActive: faker.datatype.boolean(),
+          isActive: faker.helpers.arrayElement([true, false]),
           userId: user.id,
         },
       });
