@@ -1,10 +1,6 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import { generateCoachSystemPrompt } from './ai.prompts.js';
 import prisma from '../../database/prisma.js';
-import config from '../../config/index.js';
-
-const genAI = new GoogleGenerativeAI(config.gemini.apiKey);
-const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+import { startCoachChat } from '../../core/ai.js';
 
 export async function getCoachResponse(userId: string, userMessage: string): Promise<string> {
   const user = await prisma.user.findUnique({
@@ -22,6 +18,7 @@ export async function getCoachResponse(userId: string, userMessage: string): Pro
       isActive: true,
     },
   });
+
   const streakDays = activeStreak
     ? Math.floor((new Date().getTime() - activeStreak.startDate.getTime()) / (1000 * 3600 * 24)) + 1
     : 0;
@@ -32,29 +29,28 @@ export async function getCoachResponse(userId: string, userMessage: string): Pro
     userWhy: user.userWhy,
   });
 
-  const chat = model.startChat({
-    history: [
-      {
-        role: 'user',
-        parts: [
-          {
-            text: systemPrompt,
-          },
-        ],
-      },
-      {
-        role: 'model',
-        parts: [
-          {
-            text: `Tentu, aku siap mendengarkan ${user.nickname}. Apa yang sedang kamu rasakan?`,
-          },
-        ],
-      },
-    ],
-  });
+  // Start a chat session with the AI coach
+  const chat = startCoachChat(systemPrompt, user.nickname);
 
   const result = await chat.sendMessage(userMessage);
   const response = result.response;
 
   return response.text();
+}
+
+export async function getLatestSummary(userId: string): Promise<string> {
+  const userProfile = await prisma.userProfile.findUnique({
+    where: {
+      userId,
+    },
+    select: {
+      aiSummary: true,
+    },
+  });
+
+  if (!userProfile || !userProfile.aiSummary) {
+    return 'A new insight for you will be available soon. Keep writing your daily journal!';
+  }
+
+  return userProfile.aiSummary;
 }
