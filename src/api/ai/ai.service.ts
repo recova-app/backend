@@ -4,7 +4,7 @@ import prisma from '../../database/prisma.js';
 import config from '../../config/index.js';
 
 const genAI = new GoogleGenerativeAI(config.gemini.apiKey);
-const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
 export async function getCoachResponse(userId: string, userMessage: string): Promise<string> {
   const user = await prisma.user.findUnique({
