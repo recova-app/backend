@@ -11,6 +11,16 @@ async function main() {
   console.log('[database]: Connecting to the database...');
   await prisma.$connect();
 
+  console.log('[database]: Resetting existing data...');
+  await prisma.communityComment.deleteMany();
+  await prisma.communityPost.deleteMany();
+  await prisma.journal.deleteMany();
+  await prisma.checkin.deleteMany();
+  await prisma.streak.deleteMany();
+  await prisma.userProfile.deleteMany();
+  await prisma.educationContent.deleteMany();
+  await prisma.user.deleteMany();
+
   console.log('[database]: Starting full seeding process...');
   await seedUsers();
   await seedProfiles();
@@ -19,6 +29,7 @@ async function main() {
   await seedJournals();
   await seedCommunity();
   await seedEducationContent();
+
   console.log('[database]: All seeds completed successfully!');
 }
 
