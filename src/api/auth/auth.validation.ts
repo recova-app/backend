@@ -8,7 +8,7 @@ export const googleLoginSchema = z.object({
 
 export const onboardingSchema = z.object({
   body: z.object({
-    answers: z.record(z.string(), z.any()),
+    answers: z.record(z.string(), z.unknown()),
     dependencyLevel: z.string().min(1, 'Dependency level is required'),
   }),
 });

@@ -14,7 +14,7 @@ async function updateAiSummaries() {
 
   for (const user of users) {
     try {
-      const fifteenDaysAgo = new Date(new Date().setDate(new Date().getDate() - 15));
+      const fifteenDaysAgo = new Date(Date.now() - 15 * 24 * 60 * 60 * 1000);
       const journals = await prisma.journal.findMany({
         where: {
           userId: user.id,
@@ -41,12 +41,18 @@ async function updateAiSummaries() {
       // Generate the summary using the AI model
       const summary = await generateContent(prompt);
 
-      await prisma.userProfile.update({
+      await prisma.userProfile.upsert({
         where: {
           userId: user.id,
         },
-        data: {
+        update: {
           aiSummary: summary,
+        },
+        create: {
+          answers: '', // Provide a default or appropriate value
+          dependencyLevel: 'Medium', // Provide a default or appropriate value
+          aiSummary: summary,
+          userId: user.id,
         },
       });
 
