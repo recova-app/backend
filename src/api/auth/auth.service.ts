@@ -41,3 +41,27 @@ export async function verifyGoogleTokenAndLogin(googleToken: string): Promise<st
 
   return jwtToken;
 }
+
+export async function saveOnboardingData(
+  userId: string,
+  data: { answers: Record<string, any>; dependencyLevel: string }
+) {
+  const { answers, dependencyLevel } = data;
+
+  const existingProfile = await prisma.userProfile.findUnique({
+    where: { userId },
+  });
+  if (existingProfile) {
+    throw new Error('User already completed onboarding');
+  }
+
+  const userProfile = await prisma.userProfile.create({
+    data: {
+      answers,
+      dependencyLevel,
+      userId,
+    },
+  });
+
+  return userProfile;
+}
