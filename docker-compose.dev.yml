@@ -11,7 +11,7 @@ services:
       - .env
     volumes:
       - .:/usr/src/app
-      - /usr/src/app/node_modules
+      - recova-node-modules-dev:/usr/src/app/node_modules
     depends_on:
       - db
     networks:
@@ -38,4 +38,6 @@ networks:
 
 volumes:
   recova-db-data-dev:
+    driver: local
+  recova-node-modules-dev:
     driver: local
