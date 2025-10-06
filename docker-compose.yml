@@ -1,0 +1,38 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: recova-api-prod
+    restart: unless-stopped
+    env_file:
+      - .env.production
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
+    networks:
+      - recova-network
+
+  db:
+    image: postgres:17-alpine
+    container_name: recova-db-prod
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    volumes:
+      - recova-db-data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - recova-network
+
+networks:
+  recova-network:
+    driver: bridge
+
+volumes:
+  recova-db-data:
+    driver: local
