@@ -33,6 +33,7 @@ Sebelum mulai, pastikan sudah install:
 - [Node.js](https://nodejs.org/) (v18+)
 - [NPM](https://www.npmjs.com/) atau [Yarn](https://yarnpkg.com/)
 - [PostgreSQL](https://www.postgresql.org/)
+- [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/) (Opsional, untuk menjalankan dengan container)
 
 ## ⚡ Instalasi
 
@@ -56,15 +57,7 @@ Sebelum mulai, pastikan sudah install:
    cp .env.example .env
    ```
 
-   Isi nilai variabel sesuai kebutuhan:
-
-   ```env
-   PORT=3000
-   DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
-   JWT_SECRET="YOUR_RANDOM_SECRET_HERE"
-   GOOGLE_CLIENT_ID="YOUR_GOOGLE_CLIENT_ID_HERE"
-   GEMINI_API_KEY="YOUR_GEMINI_API_KEY_HERE"
-   ```
+   Isi nilai variabel sesuai kebutuhan. Lihat penjelasan lengkap di bawah.
 
 4. **Migrasi database**
 
@@ -72,9 +65,22 @@ Sebelum mulai, pastikan sudah install:
    npm run db:migrate
    ```
 
+## ⚙️ Variabel Lingkungan (.env)
+
+File `.env` digunakan untuk mengkonfigurasi aplikasi. Berikut adalah penjelasan untuk setiap variabel yang ada di `.env.example`:
+
+- `PORT`: Port tempat server akan berjalan (contoh: `3000`).
+- `JWT_SECRET`: Kunci rahasia acak untuk menandatangani token JWT.
+- `GOOGLE_CLIENT_ID`: Client ID dari Google Cloud Console untuk otentikasi Google OAuth.
+- `GEMINI_API_KEY`: Kunci API untuk layanan Google Gemini yang digunakan oleh AI Coach.
+- `DATABASE_USER`: Nama pengguna untuk database PostgreSQL.
+- `DATABASE_PASSWORD`: Kata sandi untuk database PostgreSQL.
+- `DATABASE_NAME`: Nama database yang akan digunakan.
+- `DATABASE_URL`: URL koneksi lengkap ke database PostgreSQL. Format: `postgresql://USER:PASSWORD@HOST:PORT/DATABASE`.
+
 ## ▶️ Menjalankan Aplikasi
 
-### Mode Development
+### Mode Development (Lokal)
 
 ```bash
 npm run dev
@@ -109,15 +115,47 @@ Untuk menjalankan proses seeding, gunakan perintah:
 npm run db:seed
 ```
 
+## 🐳 Menjalankan dengan Docker
+
+Proyek ini menyediakan konfigurasi Docker untuk mempermudah proses setup di lingkungan development dan deployment di production.
+
+### Konfigurasi Docker
+
+- **`Dockerfile`**: Konfigurasi untuk membangun image production. Menggunakan _multi-stage build_ untuk menghasilkan image yang optimal dan ringan.
+- **`Dockerfile.dev`**: Konfigurasi untuk lingkungan development. Mengaktifkan _hot-reloading_ sehingga perubahan pada kode akan langsung terlihat tanpa perlu me-restart container.
+- **`docker-compose.yml`**: Mendefinisikan layanan untuk lingkungan production, terdiri dari service `api` dan `db` (PostgreSQL).
+- **`docker-compose.dev.yml`**: Mendefinisikan layanan untuk lingkungan development. Menggunakan `Dockerfile.dev` dan me-mount volume kode sumber untuk _hot-reloading_.
+
+### Menjalankan (Development)
+
+Pastikan file `.env` sudah diisi sesuai konfigurasi database di `docker-compose.dev.yml`.
+
+```bash
+docker-compose -f docker-compose.dev.yml up -d --build
+```
+
+### Menjalankan (Production)
+
+Buat file `.env.production` sebelum menjalankan di mode production.
+
+```bash
+docker-compose -f docker-compose.yml up -d --build
+```
+
 ## 📜 Skrip NPM
 
 - `npm run dev` - Jalankan server development (hot reload).
+- `npm run build` - Build TypeScript ke JavaScript.
 - `npm run lint` - Cek kualitas kode (ESLint).
 - `npm run lint:fix` - Auto-fix linting.
 - `npm run format` - Format kode dengan Prettier.
-- `npm run db:migrate` - Jalankan migrasi database.
+- `npm run postinstall` - Generate Prisma client setelah install dependensi.
+- `npm run db:migrate` - Jalankan migrasi database (development).
+- `npm run db:deploy` - Terapkan migrasi database (production/deployment).
+- `npm run db:reset` - Reset database dan jalankan ulang migrasi.
+- `npm run db:push` - Sinkronisasi skema Prisma ke database tanpa migrasi.
 - `npm run db:studio` - Buka Prisma Studio.
-- `npm run db:seed` - Isi database dengan data awal.
+- `npm run db:seed` - Isi database dengan data awal (seeding).
 
 ## 📂 Struktur Proyek
 
@@ -139,43 +177,38 @@ src/
 └── types/              # Definisi tipe global (TypeScript)
 ```
 
-## 📡 Endpoint API
+## 📡 Rute & Endpoint API
 
-Semua endpoint berada di bawah prefix: **`/api/v1`**
+Semua endpoint berada di bawah prefix: **`/api/v1`**. Pengaturan rute utama terdapat di `src/routes/index.ts` yang menggabungkan semua modul API.
 
-### Autentikasi
+- **`/api/v1/auth`**: Menangani semua rute terkait otentikasi pengguna.
+  - `POST /google` - Login / registrasi via Google Token.
+  - `POST /onboarding` - Selesaikan proses onboarding (nama panggilan, alasan, waktu check-in).
 
-- `POST /auth/google` - Login / registrasi via Google Token.
+- **`/api/v1/users`**: Rute untuk manajemen profil dan data pengguna.
+  - `GET /me` - Ambil detail profil pengguna.
+  - `PUT /settings` - Update pengaturan profil.
 
-### Pengguna
+- **`/api/v1/ai`**: Rute untuk fitur berbasis AI.
+  - `POST /ask-coach` - Kirim pesan ke AI Coach.
+  - `POST /summary` - Dapatkan ringkasan check-in harian.
 
-- `GET /users/me` - Ambil detail profil pengguna.
-- `PUT /users/settings` - Update pengaturan profil.
+- **`/api/v1/routine`**: Rute untuk rutinitas harian dan statistik.
+  - `POST /checkin` - Check-in harian.
+  - `GET /statistics` - Statistik (streak, dll).
 
-### AI
+- **`/api/v1/journals`**: Rute untuk jurnal pribadi pengguna.
+  - `GET /` - Ambil semua entri jurnal.
+  - `POST /` - Buat entri jurnal baru.
 
-- `POST /ai/ask-coach` - Kirim pesan ke AI Coach.
+- **`/api/v1/community`**: Rute untuk interaksi dalam komunitas.
+  - `GET /` - Ambil semua postingan komunitas.
+  - `POST /` - Buat postingan baru.
+  - `POST /:postId/comments` - Tambah komentar ke postingan.
+  - `POST /:postId/like` - Like postingan.
 
-### Rutinitas & Streak
-
-- `POST /routine/checkin` - Check-in harian.
-- `GET /routine/statistics` - Statistik (streak, dll).
-
-### Jurnal
-
-- `GET /journals` - Ambil semua entri jurnal.
-- `POST /journals` - Buat entri jurnal baru.
-
-### Komunitas
-
-- `GET /community` - Ambil semua postingan komunitas.
-- `POST /community` - Buat postingan baru.
-- `POST /community/:postId/comments` - Tambah komentar ke postingan.
-- `POST /community/:postId/like` - Like postingan.
-
-### Edukasi
-
-- `GET /education` - Ambil semua konten edukasi.
+- **`/api/v1/education`**: Rute untuk konten edukasi.
+  - `GET /` - Ambil semua konten edukasi.
 
 ## 🤝 Kontribusi
 
