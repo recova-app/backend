@@ -34,5 +34,5 @@ services:
 #     driver: bridge
 
 volumes:
-  recova-db-data:
+  recova-db-data-prod:
     driver: local
