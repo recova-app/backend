@@ -31,7 +31,7 @@ export const requireAuth = (req: Request, res: Response, next: NextFunction) => 
     return res.status(401).json({
       message: 'Authentication invalid: Token is not valid',
       data: null,
-      error: 'Invalid token',
+      error: `Invalid token: ${(error as Error).message}`,
     });
   }
 };
