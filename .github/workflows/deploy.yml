@@ -37,7 +37,7 @@ jobs:
             sudo docker-compose up --build -d
 
             echo "Running database migrations..."
-            sudo docker-compose exec -T api npm run db:deploy || echo "Migration failed, please check logs."
+            sudo docker-compose exec -T api npm run db:deploy
 
             echo "Pruning unused docker images..."
             sudo docker image prune -f
