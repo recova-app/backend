@@ -1,7 +1,7 @@
-import type { Request, Response } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import { errorResponse } from '../core/response.js';
 
-export function errorHandler(err: any, req: Request, res: Response) {
+export function errorHandler(err: any, req: Request, res: Response, next: NextFunction) {
   console.error('[ErrorHandler]', err);
 
   const statusCode = err.statusCode || 500;
