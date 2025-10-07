@@ -23,7 +23,7 @@ services:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: ${DATABASE_NAME}
     volumes:
-      - recova-db-data:/var/lib/postgresql/data
+      - recova-db-data-prod:/var/lib/postgresql/data
     # ports:
     #   - '5432:5432'
     # networks:
