@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { saveOnboardingData, verifyGoogleTokenAndLogin } from './auth.service.js';
-import { asyncHandler } from '../../core/asyncHandler.js';
+import { asyncHandler } from '../../middleware/asyncHandler.js';
 import { errorResponse, successResponse } from '../../core/response.js';
 
 export const googleLoginHandler = asyncHandler(async (req: Request, res: Response) => {

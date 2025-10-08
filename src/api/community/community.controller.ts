@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { addLikeToPost, createComment, createPost, findAllPosts } from './community.service.js';
-import { asyncHandler } from '../../core/asyncHandler.js';
+import { asyncHandler } from '../../middleware/asyncHandler.js';
 import { errorResponse, successResponse } from '../../core/response.js';
 
 export const createPostHandler = asyncHandler(async (req: Request, res: Response) => {

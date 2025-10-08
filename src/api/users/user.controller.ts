@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { findUserById, updateUserSettings } from './user.service.js';
-import { asyncHandler } from '../../core/asyncHandler.js';
+import { asyncHandler } from '../../middleware/asyncHandler.js';
 import { errorResponse, successResponse } from '../../core/response.js';
 
 export const getMeHandler = asyncHandler(async (req: Request, res: Response) => {
