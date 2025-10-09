@@ -14,6 +14,7 @@ Proyek ini menyediakan layanan backend untuk aplikasi **Recova**, yang dirancang
 - **Komunitas** - Posting, komentar, dan interaksi dengan sesama pengguna.
 - **Konten Edukasi** - Konten untuk mendukung perjalanan pemulihan.
 - **AI Coach** - Pendamping virtual yang memberikan dukungan emosional dan motivasi.
+- **Konten Harian** - Motivasi dan tantangan harian untuk menginspirasi pengguna.
 
 ## 🛠️ Teknologi yang Digunakan
 
@@ -24,7 +25,7 @@ Proyek ini menyediakan layanan backend untuk aplikasi **Recova**, yang dirancang
 - **ORM**: [Prisma](https://www.prisma.io/)
 - **AI**: [Google Gemini](https://ai.google.dev/)
 - **Validasi**: [Zod](https://zod.dev/)
-- **Autentikasi**: JWT & Google OAuth
+- **Autentikasi**: [JWT](https://www.jwt.io/) & [Google OAuth](https://developers.google.com/identity/protocols/oauth2?hl=id)
 
 ## 📦 Prasyarat
 
@@ -165,16 +166,19 @@ src/
 │   ├── ai/
 │   ├── auth/
 │   ├── community/
+│   ├── content/
 │   ├── education/
 │   ├── journals/
 │   ├── routine/
-│   └── users/
+│   ├── users/
+│   └── welcome/
 ├── config/             # Konfigurasi (env, app settings)
 ├── core/               # Setup inti server Express
 ├── database/           # Konfigurasi Prisma & koneksi DB
 ├── middleware/         # Middleware kustom (auth, validation, dsb.)
 ├── routes/             # Routing API
-└── types/              # Definisi tipe global (TypeScript)
+├── types/              # Definisi tipe global (TypeScript)
+└── views/              # Tampilan Views
 ```
 
 ## 📡 Rute & Endpoint API
@@ -191,7 +195,7 @@ Semua endpoint berada di bawah prefix: **`/api/v1`**. Pengaturan rute utama terd
 
 - **`/api/v1/ai`**: Rute untuk fitur berbasis AI.
   - `POST /ask-coach` - Kirim pesan ke AI Coach.
-  - `POST /summary` - Dapatkan ringkasan check-in harian.
+  - `GET /summary` - Dapatkan ringkasan check-in harian.
 
 - **`/api/v1/routine`**: Rute untuk rutinitas harian dan statistik.
   - `POST /checkin` - Check-in harian.
@@ -209,6 +213,9 @@ Semua endpoint berada di bawah prefix: **`/api/v1`**. Pengaturan rute utama terd
 
 - **`/api/v1/education`**: Rute untuk konten edukasi.
   - `GET /` - Ambil semua konten edukasi.
+
+- **`/api/v1/content`**: Rute untuk konten dinamis.
+  - `GET /daily` - Ambil konten harian.
 
 ## 🤝 Kontribusi
 
