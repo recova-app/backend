@@ -44,12 +44,14 @@ export async function verifyGoogleTokenAndLogin(googleToken: string): Promise<st
 
 export async function saveOnboardingData(
   userId: string,
-  data: { answers: Record<string, any>; dependencyLevel: string }
+  data: { answers: Record<string, any>; dependencyLevel: string; userWhy?: string }
 ) {
-  const { answers, dependencyLevel } = data;
+  const { answers, dependencyLevel, userWhy } = data;
 
   const existingProfile = await prisma.userProfile.findUnique({
-    where: { userId },
+    where: {
+      userId,
+    },
   });
   if (existingProfile) {
     throw new Error('User already completed onboarding');
@@ -62,6 +64,17 @@ export async function saveOnboardingData(
       userId,
     },
   });
+
+  if (userWhy) {
+    await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        userWhy,
+      },
+    });
+  }
 
   return userProfile;
 }
