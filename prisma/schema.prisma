@@ -74,6 +74,7 @@ model CommunityPost {
   id           String             @id @default(uuid())
   title        String?
   content      String
+  category     String             @default("advice")
   commentCount Int                @default(0)
   likeCount    Int                @default(0)
   createdAt    DateTime           @default(now())

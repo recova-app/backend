@@ -1,5 +1,11 @@
 import type { Request, Response } from 'express';
-import { addLikeToPost, createComment, createPost, findAllPosts } from './community.service.js';
+import {
+  addLikeToPost,
+  createComment,
+  createPost,
+  findAllPosts,
+  type PostCategory,
+} from './community.service.js';
 import { asyncHandler } from '../../middleware/asyncHandler.js';
 import { errorResponse, successResponse } from '../../core/response.js';
 
@@ -16,7 +22,8 @@ export const createPostHandler = asyncHandler(async (req: Request, res: Response
 });
 
 export const getPostsHandler = asyncHandler(async (req: Request, res: Response) => {
-  const posts = await findAllPosts();
+  const category = req.query.category as PostCategory | undefined;
+  const posts = await findAllPosts(category);
   return successResponse(res, 200, 'Posts fetched successfully', posts);
 });
 
