@@ -2,6 +2,7 @@ import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
 import config from '../../config/index.js';
 import prisma from '../../database/prisma.js';
+import { parseCheckinTime } from '../../utils/index.js';
 
 const client = new OAuth2Client(config.google.clientId);
 
@@ -13,7 +14,7 @@ export async function verifyGoogleTokenAndLogin(googleToken: string): Promise<st
 
   const payload = ticket.getPayload();
   if (!payload) {
-    throw new Error('Invalid Google token payload');
+    throw new Error('Google token tidak valid');
   }
 
   const { email, name, sub: googleId } = payload;
@@ -44,15 +45,22 @@ export async function verifyGoogleTokenAndLogin(googleToken: string): Promise<st
 
 export async function saveOnboardingData(
   userId: string,
-  data: { answers: Record<string, any>; dependencyLevel: string }
+  data: {
+    answers: Record<string, any>;
+    dependencyLevel: string;
+    userWhy?: string;
+    checkinTime: string;
+  }
 ) {
-  const { answers, dependencyLevel } = data;
+  const { answers, dependencyLevel, userWhy, checkinTime } = data;
 
   const existingProfile = await prisma.userProfile.findUnique({
-    where: { userId },
+    where: {
+      userId,
+    },
   });
   if (existingProfile) {
-    throw new Error('User already completed onboarding');
+    throw new Error('Pengguna sudah menyelesaikan onboarding');
   }
 
   const userProfile = await prisma.userProfile.create({
@@ -62,6 +70,20 @@ export async function saveOnboardingData(
       userId,
     },
   });
+
+  const formattedCheckinTime = parseCheckinTime(checkinTime);
+
+  if (userWhy || formattedCheckinTime) {
+    await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        ...(userWhy && { userWhy }),
+        ...(formattedCheckinTime && { checkinTime: formattedCheckinTime }),
+      },
+    });
+  }
 
   return userProfile;
 }

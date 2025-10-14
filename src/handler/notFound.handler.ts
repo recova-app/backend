@@ -9,6 +9,6 @@ class HttpError extends Error {
 }
 
 export function notFoundHandler(req: Request, res: Response, next: NextFunction) {
-  const error = new HttpError(`Route Not Found - ${req.method} ${req.originalUrl}`, 404);
+  const error = new HttpError(`Rute tidak ditemukan - ${req.method} ${req.originalUrl}`, 404);
   next(error);
 }

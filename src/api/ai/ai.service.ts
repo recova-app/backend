@@ -1,6 +1,6 @@
-import { generateCoachSystemPrompt } from './ai.prompts.js';
+import { generateCoachSystemPrompt, generateOnboardingAnalysisPrompt } from './ai.prompts.js';
 import prisma from '../../database/prisma.js';
-import { startCoachChat } from '../../core/ai.js';
+import { generateJsonContent, startCoachChat } from '../../core/ai.js';
 
 export async function getCoachResponse(userId: string, userMessage: string): Promise<string> {
   const user = await prisma.user.findUnique({
@@ -9,7 +9,7 @@ export async function getCoachResponse(userId: string, userMessage: string): Pro
     },
   });
   if (!user) {
-    throw new Error('User not found');
+    throw new Error('Pengguna tidak ditemukan');
   }
 
   const activeStreak = await prisma.streak.findFirst({
@@ -49,8 +49,15 @@ export async function getLatestSummary(userId: string): Promise<string> {
   });
 
   if (!userProfile || !userProfile.aiSummary) {
-    return 'A new insight for you will be available soon. Keep writing your daily journal!';
+    return 'Insight baru untukmu akan segera tersedia. Teruslah menulis jurnal harianmu!';
   }
 
   return userProfile.aiSummary;
+}
+
+export async function analyzeOnboardingAnswers(answers: Record<string, any>): Promise<object> {
+  const prompt = generateOnboardingAnalysisPrompt(answers);
+  const response = await generateJsonContent(prompt);
+
+  return response;
 }
