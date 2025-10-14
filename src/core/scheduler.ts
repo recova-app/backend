@@ -2,6 +2,7 @@ import cron from 'node-cron';
 import { generateJournalSummaryPrompt } from '../api/ai/ai.prompts.js';
 import prisma from '../database/prisma.js';
 import { generateContent } from './ai.js';
+import { delay } from '../utils/index.js';
 
 async function updateAiSummaries() {
   console.log('[scheduler]: Menjalankan job harian untuk memperbarui AI Summary...');
@@ -38,7 +39,6 @@ async function updateAiSummaries() {
       const journalContents = journals.map(j => j.content);
       const prompt = generateJournalSummaryPrompt(journalContents);
 
-      // Generate the summary using the AI model
       const summary = await generateContent(prompt);
 
       await prisma.userProfile.upsert({
@@ -55,6 +55,8 @@ async function updateAiSummaries() {
           userId: user.id,
         },
       });
+
+      await delay(2000); // Delay 2 seconds between requests to avoid rate limits
 
       console.log(`[ai]: Berhasil memperbarui AI Summary untuk pengguna ${user.id}`);
     } catch (error) {

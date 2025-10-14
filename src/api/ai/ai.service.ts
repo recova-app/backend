@@ -1,6 +1,6 @@
-import { generateCoachSystemPrompt } from './ai.prompts.js';
+import { generateCoachSystemPrompt, generateOnboardingAnalysisPrompt } from './ai.prompts.js';
 import prisma from '../../database/prisma.js';
-import { startCoachChat } from '../../core/ai.js';
+import { generateJsonContent, startCoachChat } from '../../core/ai.js';
 
 export async function getCoachResponse(userId: string, userMessage: string): Promise<string> {
   const user = await prisma.user.findUnique({
@@ -53,4 +53,11 @@ export async function getLatestSummary(userId: string): Promise<string> {
   }
 
   return userProfile.aiSummary;
+}
+
+export async function analyzeOnboardingAnswers(answers: Record<string, any>): Promise<object> {
+  const prompt = generateOnboardingAnalysisPrompt(answers);
+  const response = await generateJsonContent(prompt);
+
+  return response;
 }

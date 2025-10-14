@@ -33,3 +33,19 @@ export async function generateContent(prompt: string): Promise<string> {
 
   return response.text();
 }
+
+export async function generateJsonContent(prompt: string): Promise<object> {
+  const result = await model.generateContent(prompt);
+  const rawResponse = result.response.text();
+
+  try {
+    const jsonString = rawResponse
+      .replace(/```json/g, '')
+      .replace(/```/g, '')
+      .trim();
+    const parsedJson = JSON.parse(jsonString);
+    return parsedJson;
+  } catch (error) {
+    throw new Error('AI returned an invalid JSON format');
+  }
+}

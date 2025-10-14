@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { getCoachResponse, getLatestSummary } from './ai.service.js';
+import { analyzeOnboardingAnswers, getCoachResponse, getLatestSummary } from './ai.service.js';
 import { asyncHandler } from '../../handler/async.handler.js';
 import { errorResponse, successResponse } from '../../core/response.js';
 
@@ -35,4 +35,18 @@ export const getSummaryHandler = asyncHandler(async (req: Request, res: Response
 
   const summary = await getLatestSummary(userId);
   return successResponse(res, 200, 'AI Summary berhasil diambil', summary);
+});
+
+export const onboardingAnalysisHandler = asyncHandler(async (req: Request, res: Response) => {
+  const { answers } = req.body;
+  if (!answers || Object.keys(answers).length === 0) {
+    return res.status(400).json({
+      message: 'Kesalahan validasi',
+      data: null,
+      error: 'Data jawaban tidak boleh kosong',
+    });
+  }
+
+  const analysis = await analyzeOnboardingAnswers(answers);
+  return successResponse(res, 200, 'Analisis onboarding berhasil dilakukan', analysis);
 });

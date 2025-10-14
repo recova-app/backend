@@ -176,9 +176,11 @@ src/
 ├── config/             # Konfigurasi (env, app settings)
 ├── core/               # Setup inti server Express
 ├── database/           # Konfigurasi Prisma & koneksi DB
+├── handler/          # Error handling & response standar
 ├── middleware/         # Middleware kustom (auth, validation, dsb.)
 ├── routes/             # Routing API
 ├── types/              # Definisi tipe global (TypeScript)
+├── utils/              # Utilitas & helper functions
 └── views/              # Tampilan Views
 ```
 
@@ -197,6 +199,7 @@ Semua endpoint berada di bawah prefix: **`/api/v1`**. Pengaturan rute utama terd
 - **`/api/v1/ai`**: Rute untuk fitur berbasis AI.
   - `POST /ask-coach` - Kirim pesan ke AI Coach.
   - `GET /summary` - Dapatkan ringkasan check-in harian.
+  - `POST /onboarding-analysis` - Analisis data onboarding.
 
 - **`/api/v1/routine`**: Rute untuk rutinitas harian dan statistik.
   - `POST /checkin` - Check-in harian.
