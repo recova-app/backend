@@ -14,5 +14,11 @@ export const onboardingSchema = z.object({
       .string()
       .optional()
       .refine(val => !val || val.length > 0, { message: 'Alasan pengguna harus diisi' }),
+    checkinTime: z
+      .string()
+      .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, {
+        message: 'Format waktu check-in tidak valid, gunakan format HH:mm',
+      })
+      .trim(),
   }),
 });

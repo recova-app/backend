@@ -44,9 +44,14 @@ export async function verifyGoogleTokenAndLogin(googleToken: string): Promise<st
 
 export async function saveOnboardingData(
   userId: string,
-  data: { answers: Record<string, any>; dependencyLevel: string; userWhy?: string }
+  data: {
+    answers: Record<string, any>;
+    dependencyLevel: string;
+    userWhy?: string;
+    checkinTime: string;
+  }
 ) {
-  const { answers, dependencyLevel, userWhy } = data;
+  const { answers, dependencyLevel, userWhy, checkinTime } = data;
 
   const existingProfile = await prisma.userProfile.findUnique({
     where: {
@@ -65,13 +70,14 @@ export async function saveOnboardingData(
     },
   });
 
-  if (userWhy) {
+  if (userWhy || checkinTime) {
     await prisma.user.update({
       where: {
         id: userId,
       },
       data: {
-        userWhy,
+        ...(userWhy && { userWhy }),
+        ...(checkinTime && { checkinTime }),
       },
     });
   }
