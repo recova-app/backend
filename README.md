@@ -74,6 +74,7 @@ File `.env` digunakan untuk mengkonfigurasi aplikasi. Berikut adalah penjelasan 
 - `JWT_SECRET`: Kunci rahasia acak untuk menandatangani token JWT.
 - `GOOGLE_CLIENT_ID`: Client ID dari Google Cloud Console untuk otentikasi Google OAuth.
 - `GEMINI_API_KEY`: Kunci API untuk layanan Google Gemini yang digunakan oleh AI Coach.
+- `GEMINI_MODEL`: Model AI Gemini yang akan digunakan (contoh: `gemini-2.0-flash`).
 - `DATABASE_USER`: Nama pengguna untuk database PostgreSQL.
 - `DATABASE_PASSWORD`: Kata sandi untuk database PostgreSQL.
 - `DATABASE_NAME`: Nama database yang akan digunakan.
@@ -222,9 +223,9 @@ Semua endpoint berada di bawah prefix: **`/api/v1`**. Pengaturan rute utama terd
 Kontribusi terbuka untuk siapa saja.
 
 - Fork repositori ini
-- Buat branch fitur (`git checkout -b feat/fitur-baru`)
-- Commit perubahan (`git commit -m 'feat: tambah fitur baru'`)
-- Push ke branch (`git push origin feat/fitur-baru`)
+- Buat branch fitur (`git checkout -b feat/new-feature`)
+- Commit perubahan (`git commit -m 'feat: add new feature'`)
+- Push ke branch (`git push origin feat/new-feature`)
 - Buat **Pull Request**
 
 ## 📄 Lisensi
