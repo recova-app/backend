@@ -2,6 +2,7 @@ import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
 import config from '../../config/index.js';
 import prisma from '../../database/prisma.js';
+import { parseCheckinTime } from '../../utils/index.js';
 
 const client = new OAuth2Client(config.google.clientId);
 
@@ -70,14 +71,16 @@ export async function saveOnboardingData(
     },
   });
 
-  if (userWhy || checkinTime) {
+  const formattedCheckinTime = parseCheckinTime(checkinTime);
+
+  if (userWhy || formattedCheckinTime) {
     await prisma.user.update({
       where: {
         id: userId,
       },
       data: {
         ...(userWhy && { userWhy }),
-        ...(checkinTime && { checkinTime }),
+        ...(formattedCheckinTime && { checkinTime: formattedCheckinTime }),
       },
     });
   }

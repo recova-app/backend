@@ -96,8 +96,8 @@ ${formattedAnswers}
 }
 
 # Penting:
-- Jangan menambahkan teks apapun di luar format JSON.
-- Pastikan output adalah JSON yang valid.
+1.  Jangan menambahkan teks apapun di luar format JSON.
+2.  Pastikan output adalah JSON yang valid.
 
 Sekarang, analisis jawaban pengguna dan hasilkan JSON-nya.
   `.trim();
