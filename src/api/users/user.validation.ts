@@ -7,8 +7,8 @@ export const updateUserSettingsSchema = z.object({
       userWhy: z.string().min(10, 'Alasan Anda harus terdiri dari minimal 10 karakter').trim(),
       checkinTime: z
         .string()
-        .refine(val => !val || !isNaN(Date.parse(val)), {
-          message: 'Format tanggal dan waktu tidak valid, gunakan ISO 8601',
+        .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, {
+          message: 'Format waktu check-in tidak valid, gunakan format HH:mm',
         })
         .trim(),
     })

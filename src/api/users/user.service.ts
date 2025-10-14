@@ -1,4 +1,5 @@
 import prisma from '../../database/prisma.js';
+import { parseCheckinTime } from '../../utils/index.js';
 
 export async function findUserById(userId: string) {
   const user = await prisma.user.findUnique({
@@ -31,11 +32,8 @@ export async function updateUserSettings(
     dataToUpdate.userWhy = data.userWhy;
   }
   if (data.checkinTime) {
-    const parsedDate = new Date(data.checkinTime);
-    if (isNaN(parsedDate.getTime())) {
-      throw new Error('Format waktu check-in tidak valid');
-    }
-    dataToUpdate.checkinTime = parsedDate;
+    const checkinDate = parseCheckinTime(data.checkinTime);
+    dataToUpdate.checkinTime = checkinDate;
   }
 
   const updatedUser = await prisma.user.update({
