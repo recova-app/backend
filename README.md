@@ -14,6 +14,7 @@ Proyek ini menyediakan layanan backend untuk aplikasi **Recova**, yang dirancang
 - **Komunitas** - Posting, komentar, dan interaksi dengan sesama pengguna.
 - **Konten Edukasi** - Konten untuk mendukung perjalanan pemulihan.
 - **AI Coach** - Pendamping virtual yang memberikan dukungan emosional dan motivasi.
+- **Konten Harian** - Motivasi dan tantangan harian untuk menginspirasi pengguna.
 
 ## 🛠️ Teknologi yang Digunakan
 
@@ -24,7 +25,7 @@ Proyek ini menyediakan layanan backend untuk aplikasi **Recova**, yang dirancang
 - **ORM**: [Prisma](https://www.prisma.io/)
 - **AI**: [Google Gemini](https://ai.google.dev/)
 - **Validasi**: [Zod](https://zod.dev/)
-- **Autentikasi**: JWT & Google OAuth
+- **Autentikasi**: [JWT](https://www.jwt.io/) & [Google OAuth](https://developers.google.com/identity/protocols/oauth2?hl=id)
 
 ## 📦 Prasyarat
 
@@ -73,6 +74,7 @@ File `.env` digunakan untuk mengkonfigurasi aplikasi. Berikut adalah penjelasan 
 - `JWT_SECRET`: Kunci rahasia acak untuk menandatangani token JWT.
 - `GOOGLE_CLIENT_ID`: Client ID dari Google Cloud Console untuk otentikasi Google OAuth.
 - `GEMINI_API_KEY`: Kunci API untuk layanan Google Gemini yang digunakan oleh AI Coach.
+- `GEMINI_MODEL`: Model AI Gemini yang akan digunakan (contoh: `gemini-2.0-flash`).
 - `DATABASE_USER`: Nama pengguna untuk database PostgreSQL.
 - `DATABASE_PASSWORD`: Kata sandi untuk database PostgreSQL.
 - `DATABASE_NAME`: Nama database yang akan digunakan.
@@ -101,13 +103,15 @@ Proyek ini dilengkapi dengan mekanisme _seeding_ untuk mengisi database dengan d
 
 Data yang di-seed meliputi:
 
-- **Users**: Pengguna dummy
-- **Profiles**: Profil untuk setiap pengguna
-- **Streaks**: Riwayat streak
-- **Check-ins**: Data check-in harian
-- **Journals**: Entri jurnal
-- **Community**: Postingan dan komentar di komunitas
-- **Education**: Konten edukasi
+- **Users**: Data pengguna dengan berbagai latar belakang
+- **Profiles**: Profil lengkap beserta informasi pendukung recovery
+- **Streaks**: Riwayat streak dan aktivitas pemulihan
+- **Check-ins**: Data check-in harian dengan variasi mood
+- **Journals**: Entri jurnal refleksi perjalanan pengguna
+- **Community**: Postingan dan komentar komunitas
+- **Education**: Konten edukasi terkait pemulihan dan pengembangan diri
+- **Daily Motivations**: Motivasi harian untuk mendukung proses recovery
+- **Daily Challenges**: Tantangan harian untuk membangun kebiasaan positif
 
 Untuk menjalankan proses seeding, gunakan perintah:
 
@@ -165,16 +169,21 @@ src/
 │   ├── ai/
 │   ├── auth/
 │   ├── community/
+│   ├── content/
 │   ├── education/
 │   ├── journals/
 │   ├── routine/
-│   └── users/
+│   ├── users/
+│   └── welcome/
 ├── config/             # Konfigurasi (env, app settings)
 ├── core/               # Setup inti server Express
 ├── database/           # Konfigurasi Prisma & koneksi DB
+├── handler/          # Error handling & response standar
 ├── middleware/         # Middleware kustom (auth, validation, dsb.)
 ├── routes/             # Routing API
-└── types/              # Definisi tipe global (TypeScript)
+├── types/              # Definisi tipe global (TypeScript)
+├── utils/              # Utilitas & helper functions
+└── views/              # Tampilan Views
 ```
 
 ## 📡 Rute & Endpoint API
@@ -191,7 +200,8 @@ Semua endpoint berada di bawah prefix: **`/api/v1`**. Pengaturan rute utama terd
 
 - **`/api/v1/ai`**: Rute untuk fitur berbasis AI.
   - `POST /ask-coach` - Kirim pesan ke AI Coach.
-  - `POST /summary` - Dapatkan ringkasan check-in harian.
+  - `GET /summary` - Dapatkan ringkasan check-in harian.
+  - `POST /onboarding-analysis` - Analisis data onboarding.
 
 - **`/api/v1/routine`**: Rute untuk rutinitas harian dan statistik.
   - `POST /checkin` - Check-in harian.
@@ -210,14 +220,17 @@ Semua endpoint berada di bawah prefix: **`/api/v1`**. Pengaturan rute utama terd
 - **`/api/v1/education`**: Rute untuk konten edukasi.
   - `GET /` - Ambil semua konten edukasi.
 
+- **`/api/v1/content`**: Rute untuk konten dinamis.
+  - `GET /daily` - Ambil konten harian.
+
 ## 🤝 Kontribusi
 
 Kontribusi terbuka untuk siapa saja.
 
 - Fork repositori ini
-- Buat branch fitur (`git checkout -b feat/fitur-baru`)
-- Commit perubahan (`git commit -m 'feat: tambah fitur baru'`)
-- Push ke branch (`git push origin feat/fitur-baru`)
+- Buat branch fitur (`git checkout -b feat/new-feature`)
+- Commit perubahan (`git commit -m 'feat: add new feature'`)
+- Push ke branch (`git push origin feat/new-feature`)
 - Buat **Pull Request**
 
 ## 📄 Lisensi
