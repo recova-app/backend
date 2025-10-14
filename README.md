@@ -103,13 +103,15 @@ Proyek ini dilengkapi dengan mekanisme _seeding_ untuk mengisi database dengan d
 
 Data yang di-seed meliputi:
 
-- **Users**: Pengguna dummy
-- **Profiles**: Profil untuk setiap pengguna
-- **Streaks**: Riwayat streak
-- **Check-ins**: Data check-in harian
-- **Journals**: Entri jurnal
-- **Community**: Postingan dan komentar di komunitas
-- **Education**: Konten edukasi
+- **Users**: Data pengguna dengan berbagai latar belakang
+- **Profiles**: Profil lengkap beserta informasi pendukung recovery
+- **Streaks**: Riwayat streak dan aktivitas pemulihan
+- **Check-ins**: Data check-in harian dengan variasi mood
+- **Journals**: Entri jurnal refleksi perjalanan pengguna
+- **Community**: Postingan dan komentar komunitas
+- **Education**: Konten edukasi terkait pemulihan dan pengembangan diri
+- **Daily Motivations**: Motivasi harian untuk mendukung proses recovery
+- **Daily Challenges**: Tantangan harian untuk membangun kebiasaan positif
 
 Untuk menjalankan proses seeding, gunakan perintah:
 
