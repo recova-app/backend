@@ -74,7 +74,6 @@ model CommunityPost {
   id           String             @id @default(uuid())
   title        String?
   content      String
-  category     String             @default("advice")
   commentCount Int                @default(0)
   likeCount    Int                @default(0)
   createdAt    DateTime           @default(now())
@@ -115,14 +114,4 @@ model UserProfile {
   updatedAt       DateTime @updatedAt
   userId          String   @unique
   user            User     @relation(fields: [userId], references: [id])
-}
-
-model DailyMotivation {
-  id      String @id @default(uuid())
-  content String @unique
-}
-
-model DailyChallenge {
-  id      String @id @default(uuid())
-  content String @unique
 }

@@ -6,18 +6,18 @@ export const requireAuth = (req: Request, res: Response, next: NextFunction) => 
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({
-      message: 'Gagal melakukan autentikasi: Token tidak ditemukan',
+      message: 'Authentication invalid: No token provided',
       data: null,
-      error: 'Token diperlukan untuk rute ini',
+      error: 'Token is required for this route',
     });
   }
 
   const token = authHeader.split(' ')[1];
   if (!token) {
     return res.status(401).json({
-      message: 'Gagal melakukan autentikasi: Token tidak ditemukan',
+      message: 'Authentication invalid: No token provided',
       data: null,
-      error: 'Token diperlukan untuk rute ini',
+      error: 'Token is required for this route',
     });
   }
 
@@ -29,9 +29,9 @@ export const requireAuth = (req: Request, res: Response, next: NextFunction) => 
     next();
   } catch (error) {
     return res.status(401).json({
-      message: 'Gagal melakukan autentikasi: Token tidak valid',
+      message: 'Authentication invalid: Token is not valid',
       data: null,
-      error: `Token tidak valid: ${(error as Error).message}`,
+      error: `Invalid token: ${(error as Error).message}`,
     });
   }
 };

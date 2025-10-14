@@ -70,35 +70,3 @@ ${allJournals}
 Sekarang, berikan satu "Wawasan Hari Ini" berdasarkan kumpulan jurnal di atas.
   `.trim();
 }
-
-export function generateOnboardingAnalysisPrompt(answers: Record<string, any>): string {
-  const formattedAnswers = Object.entries(answers)
-    .map(([question, answer]) => `- ${question}: ${answer}`)
-    .join('\n');
-
-  return `
-Kamu adalah seorang psikolog AI yang empatik, bijak, dan sangat baik dalam menyederhanakan konsep rumit. Tugasmu adalah menganalisis jawaban kuesioner dari seseorang yang baru memulai perjalanan pemulihan dari kecanduan pornografi dan memberikan ringkasan yang suportif seperti pada contoh.
-
-# Jawaban Kuesioner Pengguna:
-${formattedAnswers}
-
-# Instruksi:
-1.  **Analisis Jawaban:** Baca semua jawaban untuk mengidentifikasi tingkat ketergantungan (Rendah, Sedang, Tinggi) dan pola utama (misalnya, penggunaan sebagai pelarian stres).
-2.  **Hasilkan Respons JSON:** Buat respons dalam format JSON yang valid. JSON ini harus memiliki tiga kunci utama: "title", "main_point", dan "encouragement".
-3.  **Gaya Bahasa:** Gunakan bahasa Indonesia yang formal namun hangat, memberdayakan, dan tidak menghakimi.
-
-# Contoh Struktur & Isi JSON Output:
-
-{
-  "title": "Jawabanmu Mengindikasikan Kamu Memiliki Ketergantungan yang Tinggi Terhadap Pornografi",
-  "main_point": "Jawabanmu menunjukkan adanya kecenderungan tinggi terhadap ketergantungan pornografi. Hal ini bisa membuatmu sulit mengendalikan diri, merasa gelisah ketika tidak mengakses, serta mengganggu fokus belajar, pekerjaan, dan hubungan sosial.",
-  "encouragement": "Hasil ini tidak mendefinisikan siapa dirimu, tapi menunjukkan area yang bisa kamu perbaiki. Dengan kesadaran dan usaha, kamu mampu mengendalikannya. Kami di sini untuk membantumu."
-}
-
-# Penting:
-1.  Jangan menambahkan teks apapun di luar format JSON.
-2.  Pastikan output adalah JSON yang valid.
-
-Sekarang, analisis jawaban pengguna dan hasilkan JSON-nya.
-  `.trim();
-}

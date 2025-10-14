@@ -1,23 +1,12 @@
-import { differenceInDays } from 'date-fns';
 import prisma from '../../database/prisma.js';
 
-export type PostCategory = 'advice' | 'motivation' | 'story' | 'question' | 'assistance';
-
-export async function createPost(
-  userId: string,
-  data: {
-    title?: string;
-    content: string;
-    category: PostCategory;
-  }
-) {
-  const { title, content, category } = data;
+export async function createPost(userId: string, data: { title?: string; content: string }) {
+  const { title, content } = data;
 
   const post = await prisma.communityPost.create({
     data: {
       title: title ?? null,
       content,
-      category,
       userId,
     },
   });
@@ -25,14 +14,8 @@ export async function createPost(
   return post;
 }
 
-export async function findAllPosts(category?: PostCategory) {
-  const whereClause: { category?: PostCategory } = {};
-  if (category) {
-    whereClause.category = category;
-  }
-
+export async function findAllPosts() {
   const posts = await prisma.communityPost.findMany({
-    where: whereClause,
     select: {
       id: true,
       title: true,
@@ -43,14 +26,6 @@ export async function findAllPosts(category?: PostCategory) {
       user: {
         select: {
           nickname: true,
-          streaks: {
-            where: {
-              isActive: true,
-            },
-            select: {
-              startDate: true,
-            },
-          },
         },
       },
     },
@@ -59,29 +34,7 @@ export async function findAllPosts(category?: PostCategory) {
     },
   });
 
-  const formattedPosts = posts.map(post => {
-    const activeStreak = post.user.streaks[0];
-
-    const currentStreakDays = activeStreak
-      ? differenceInDays(new Date(), activeStreak.startDate) + 1
-      : 0;
-
-    return {
-      id: post.id,
-      title: post.title,
-      content: post.content,
-      category,
-      commentCount: post.commentCount,
-      likeCount: post.likeCount,
-      createdAt: post.createdAt,
-      author: {
-        nickname: post.user.nickname,
-        currentStreak: currentStreakDays,
-      },
-    };
-  });
-
-  return formattedPosts;
+  return posts;
 }
 
 export async function createComment(userId: string, postId: string, content: string) {

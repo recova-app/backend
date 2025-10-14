@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { getUserStatistics, processDailyCheckin } from './routine.service.js';
-import { asyncHandler } from '../../handler/async.handler.js';
+import { asyncHandler } from '../../middleware/asyncHandler.js';
 import { errorResponse, successResponse } from '../../core/response.js';
 
 export const dailyCheckinHandler = asyncHandler(async (req: Request, res: Response) => {
@@ -8,29 +8,19 @@ export const dailyCheckinHandler = asyncHandler(async (req: Request, res: Respon
   const checkinData = req.body;
 
   if (!userId) {
-    return errorResponse(
-      res,
-      401,
-      'Tidak diizinkan',
-      'ID pengguna tidak ditemukan dalam permintaan'
-    );
+    return errorResponse(res, 401, 'Unauthorized', 'User ID not found in request');
   }
 
   const checkinResult = await processDailyCheckin(userId, checkinData);
-  return successResponse(res, 200, 'Check-in berhasil', checkinResult);
+  return successResponse(res, 200, 'Check-in successful', checkinResult);
 });
 
 export const getStatisticsHandler = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.user?.id;
   if (!userId) {
-    return errorResponse(
-      res,
-      401,
-      'Tidak diizinkan',
-      'ID pengguna tidak ditemukan dalam permintaan'
-    );
+    return errorResponse(res, 401, 'Unauthorized', 'User ID not found in request');
   }
 
   const statistics = await getUserStatistics(userId);
-  return successResponse(res, 200, 'Statistik berhasil diambil', statistics);
+  return successResponse(res, 200, 'Statistics fetched successfully', statistics);
 });

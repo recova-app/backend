@@ -2,10 +2,9 @@ import cron from 'node-cron';
 import { generateJournalSummaryPrompt } from '../api/ai/ai.prompts.js';
 import prisma from '../database/prisma.js';
 import { generateContent } from './ai.js';
-import { delay } from '../utils/index.js';
 
 async function updateAiSummaries() {
-  console.log('[scheduler]: Menjalankan job harian untuk memperbarui AI Summary...');
+  console.log('[scheduler]: Running daily AI Summary job...');
 
   const users = await prisma.user.findMany({
     select: {
@@ -39,6 +38,7 @@ async function updateAiSummaries() {
       const journalContents = journals.map(j => j.content);
       const prompt = generateJournalSummaryPrompt(journalContents);
 
+      // Generate the summary using the AI model
       const summary = await generateContent(prompt);
 
       await prisma.userProfile.upsert({
@@ -49,22 +49,20 @@ async function updateAiSummaries() {
           aiSummary: summary,
         },
         create: {
-          answers: '',
-          dependencyLevel: 'Medium',
+          answers: '', // Provide a default or appropriate value
+          dependencyLevel: 'Medium', // Provide a default or appropriate value
           aiSummary: summary,
           userId: user.id,
         },
       });
 
-      await delay(2000); // Delay 2 seconds between requests to avoid rate limits
-
-      console.log(`[ai]: Berhasil memperbarui AI Summary untuk pengguna ${user.id}`);
+      console.log(`[ai]: Successfully updated AI Summary for user ${user.id}`);
     } catch (error) {
-      console.error(`[ai]: Gagal memperbarui AI Summary untuk pengguna ${user.id}:`, error);
+      console.error(`[ai]: Failed to update AI Summary for user ${user.id}:`, error);
     }
   }
 
-  console.log('[scheduler]: Job harian AI Summary selesai.');
+  console.log('[scheduler]: Daily AI Summary job finished.');
 }
 
 export function initializeSchedulers() {
@@ -79,7 +77,5 @@ export function initializeSchedulers() {
     }
   );
 
-  console.log(
-    '[scheduler]: Job harian AI Summary dijadwalkan untuk berjalan setiap hari pada pukul 02:00 WIB.'
-  );
+  console.log('[scheduler]: AI Summary job scheduled to run daily at 02:00 AM Jakarta time.');
 }
