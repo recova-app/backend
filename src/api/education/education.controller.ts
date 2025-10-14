@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { findAllEducationContents } from './education.service.js';
-import { asyncHandler } from '../../middleware/asyncHandler.js';
+import { asyncHandler } from '../../handler/async.handler.js';
 import { successResponse } from '../../core/response.js';
 
 export const getEducationContentsHandler = asyncHandler(async (req: Request, res: Response) => {

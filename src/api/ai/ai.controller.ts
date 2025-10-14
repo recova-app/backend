@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { getCoachResponse, getLatestSummary } from './ai.service.js';
-import { asyncHandler } from '../../middleware/asyncHandler.js';
+import { asyncHandler } from '../../handler/async.handler.js';
 import { errorResponse, successResponse } from '../../core/response.js';
 
 export const askCoachHandler = asyncHandler(async (req: Request, res: Response) => {

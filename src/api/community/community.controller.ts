@@ -6,7 +6,7 @@ import {
   findAllPosts,
   type PostCategory,
 } from './community.service.js';
-import { asyncHandler } from '../../middleware/asyncHandler.js';
+import { asyncHandler } from '../../handler/async.handler.js';
 import { errorResponse, successResponse } from '../../core/response.js';
 
 export const createPostHandler = asyncHandler(async (req: Request, res: Response) => {
