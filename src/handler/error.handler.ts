@@ -5,7 +5,7 @@ export function errorHandler(err: any, req: Request, res: Response, next: NextFu
   console.error('[ErrorHandler]', err);
 
   const statusCode = err.statusCode || 500;
-  const message = err.message || 'Internal Server Error';
+  const message = err.message || 'Kesalahan pada server';
 
   return errorResponse(res, statusCode, message, err.stack ? err.stack : undefined);
 }

@@ -13,17 +13,24 @@ export const validate =
       return next();
     } catch (error) {
       if (error instanceof ZodError) {
-        const errorMessages = error.issues.map(e => e.message).join(', ');
+        const errorDetails = error.issues.reduce(
+          (acc, curr) => {
+            const path = curr.path.join('.') || 'unknown';
+            acc[path] = curr.message;
+            return acc;
+          },
+          {} as Record<string, string>
+        );
 
         return res.status(400).json({
-          message: `Validation error: ${errorMessages}`,
+          message: 'Kesalahan validasi',
           data: null,
-          error: error.issues,
+          error: errorDetails,
         });
       }
 
       return res.status(500).json({
-        message: 'Internal Server Error',
+        message: 'Kesalahan pada server',
         data: null,
         error: error,
       });
