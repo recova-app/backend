@@ -14,7 +14,7 @@ export async function getDailyContent() {
   });
 
   return {
-    motivation: randomMotivation?.content || 'Keep moving forward, no matter how small the step.',
-    challenge: randomChallenge?.content || 'Write one thing you are grateful for today.',
+    motivation: randomMotivation?.content || 'Teruslah maju, sekecil apapun langkahmu.',
+    challenge: randomChallenge?.content || 'Tuliskan satu hal yang kamu syukuri hari ini.',
   };
 }

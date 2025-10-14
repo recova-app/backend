@@ -33,7 +33,7 @@ export async function updateUserSettings(
   if (data.checkinTime) {
     const parsedDate = new Date(data.checkinTime);
     if (isNaN(parsedDate.getTime())) {
-      throw new Error('Invalid checkinTime format');
+      throw new Error('Format waktu check-in tidak valid');
     }
     dataToUpdate.checkinTime = parsedDate;
   }

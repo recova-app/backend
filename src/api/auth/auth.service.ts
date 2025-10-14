@@ -13,7 +13,7 @@ export async function verifyGoogleTokenAndLogin(googleToken: string): Promise<st
 
   const payload = ticket.getPayload();
   if (!payload) {
-    throw new Error('Invalid Google token payload');
+    throw new Error('Google token tidak valid');
   }
 
   const { email, name, sub: googleId } = payload;
@@ -54,7 +54,7 @@ export async function saveOnboardingData(
     },
   });
   if (existingProfile) {
-    throw new Error('User already completed onboarding');
+    throw new Error('Pengguna sudah menyelesaikan onboarding');
   }
 
   const userProfile = await prisma.userProfile.create({

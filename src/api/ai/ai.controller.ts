@@ -8,11 +8,16 @@ export const askCoachHandler = asyncHandler(async (req: Request, res: Response) 
   const { message: userMessage } = req.body;
 
   if (!userId) {
-    return errorResponse(res, 401, 'Unauthorized', 'User ID not found in request');
+    return errorResponse(
+      res,
+      401,
+      'Tidak diizinkan',
+      'ID pengguna tidak ditemukan dalam permintaan'
+    );
   }
 
   const coachResponse = await getCoachResponse(userId, userMessage);
-  return successResponse(res, 200, 'AI Coach response generated successfully', {
+  return successResponse(res, 200, 'Respon AI Coach berhasil dibuat', {
     response: coachResponse,
   });
 });
@@ -20,9 +25,14 @@ export const askCoachHandler = asyncHandler(async (req: Request, res: Response) 
 export const getSummaryHandler = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.user?.id;
   if (!userId) {
-    return errorResponse(res, 401, 'Unauthorized', 'User ID not found in request');
+    return errorResponse(
+      res,
+      401,
+      'Tidak diizinkan',
+      'ID pengguna tidak ditemukan dalam permintaan'
+    );
   }
 
   const summary = await getLatestSummary(userId);
-  return successResponse(res, 200, 'AI Summary fetched successfully', summary);
+  return successResponse(res, 200, 'AI Summary berhasil diambil', summary);
 });

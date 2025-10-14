@@ -20,7 +20,7 @@ export async function processDailyCheckin(
       },
     });
     if (existingCheckin) {
-      throw new Error('User has already checked in today');
+      throw new Error('Pengguna sudah melakukan check-in hari ini.');
     }
 
     const activeStreak = await tx.streak.findFirst({

@@ -14,17 +14,22 @@ export const createPostHandler = asyncHandler(async (req: Request, res: Response
   const postData = req.body;
 
   if (!userId) {
-    return errorResponse(res, 401, 'Unauthorized', 'User ID not found in request');
+    return errorResponse(
+      res,
+      401,
+      'Tidak diizinkan',
+      'ID pengguna tidak ditemukan dalam permintaan'
+    );
   }
 
   const post = await createPost(userId, postData);
-  return successResponse(res, 201, 'Post created successfully', post);
+  return successResponse(res, 201, 'Postingan berhasil dibuat', post);
 });
 
 export const getPostsHandler = asyncHandler(async (req: Request, res: Response) => {
   const category = req.query.category as PostCategory | undefined;
   const posts = await findAllPosts(category);
-  return successResponse(res, 200, 'Posts fetched successfully', posts);
+  return successResponse(res, 200, 'Postingan berhasil diambil', posts);
 });
 
 export const createCommentHandler = asyncHandler(async (req: Request, res: Response) => {
@@ -33,22 +38,27 @@ export const createCommentHandler = asyncHandler(async (req: Request, res: Respo
   const { content } = req.body;
 
   if (!userId) {
-    return errorResponse(res, 401, 'Unauthorized', 'User ID not found in request');
+    return errorResponse(
+      res,
+      401,
+      'Tidak diizinkan',
+      'ID pengguna tidak ditemukan dalam permintaan'
+    );
   }
   if (!postId) {
-    return errorResponse(res, 400, 'Bad Request', 'Post ID is required');
+    return errorResponse(res, 400, 'Permintaan Tidak Valid', 'ID postingan diperlukan');
   }
 
   const comment = await createComment(userId, postId, content);
-  return successResponse(res, 201, 'Comment created successfully', comment);
+  return successResponse(res, 201, 'Komentar berhasil dibuat', comment);
 });
 
 export const addLikeHandler = asyncHandler(async (req: Request, res: Response) => {
   const { postId } = req.params;
   if (!postId) {
-    return errorResponse(res, 400, 'Bad Request', 'Post ID is required');
+    return errorResponse(res, 400, 'Permintaan Tidak Valid', 'ID postingan diperlukan');
   }
 
   const post = await addLikeToPost(postId);
-  return successResponse(res, 200, 'Post liked successfully', { likeCount: post.likeCount });
+  return successResponse(res, 200, 'Postingan berhasil disukai', { likeCount: post.likeCount });
 });

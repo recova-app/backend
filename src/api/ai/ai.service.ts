@@ -9,7 +9,7 @@ export async function getCoachResponse(userId: string, userMessage: string): Pro
     },
   });
   if (!user) {
-    throw new Error('User not found');
+    throw new Error('Pengguna tidak ditemukan');
   }
 
   const activeStreak = await prisma.streak.findFirst({
@@ -49,7 +49,7 @@ export async function getLatestSummary(userId: string): Promise<string> {
   });
 
   if (!userProfile || !userProfile.aiSummary) {
-    return 'A new insight for you will be available soon. Keep writing your daily journal!';
+    return 'Insight baru untukmu akan segera tersedia. Teruslah menulis jurnal harianmu!';
   }
 
   return userProfile.aiSummary;
