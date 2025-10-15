@@ -5,6 +5,7 @@ dotenv.config();
 const config = {
   port: process.env.PORT || 3000,
   databaseUrl: process.env.DATABASE_URL || '',
+  docsUrl: process.env.DOCS_URL || '',
   jwt: {
     secret: process.env.JWT_SECRET || '',
   },

@@ -109,17 +109,63 @@ export async function createComment(userId: string, postId: string, content: str
   });
 }
 
-export async function addLikeToPost(postId: string) {
-  const updatedPost = await prisma.communityPost.update({
+export async function toggleLikeOnPost(userId: string, postId: string) {
+  const existingLike = await prisma.communityPostLike.findUnique({
     where: {
-      id: postId,
-    },
-    data: {
-      likeCount: {
-        increment: 1,
+      userId_postId: {
+        userId,
+        postId,
       },
     },
   });
 
-  return updatedPost;
+  if (existingLike) {
+    const updatedPost = await prisma.$transaction([
+      prisma.communityPostLike.delete({
+        where: {
+          userId_postId: {
+            userId,
+            postId,
+          },
+        },
+      }),
+      prisma.communityPost.update({
+        where: {
+          id: postId,
+        },
+        data: {
+          likeCount: {
+            decrement: 1,
+          },
+        },
+      }),
+    ]);
+    return {
+      likedCount: updatedPost[1].likeCount,
+      isLiked: false,
+    };
+  } else {
+    const updatedPost = await prisma.$transaction([
+      prisma.communityPostLike.create({
+        data: {
+          userId,
+          postId,
+        },
+      }),
+      prisma.communityPost.update({
+        where: {
+          id: postId,
+        },
+        data: {
+          likeCount: {
+            increment: 1,
+          },
+        },
+      }),
+    ]);
+    return {
+      likedCount: updatedPost[1].likeCount,
+      isLiked: true,
+    };
+  }
 }

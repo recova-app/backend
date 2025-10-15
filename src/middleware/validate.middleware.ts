@@ -15,7 +15,8 @@ export const validate =
       if (error instanceof ZodError) {
         const errorDetails = error.issues.reduce(
           (acc, curr) => {
-            const path = curr.path.join('.') || 'unknown';
+            let path = curr.path.join('.') || 'unknown';
+            path = path.replace(/^(body|query|params)\./, '');
             acc[path] = curr.message;
             return acc;
           },
