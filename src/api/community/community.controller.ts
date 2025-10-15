@@ -1,9 +1,9 @@
 import type { Request, Response } from 'express';
 import {
-  addLikeToPost,
   createComment,
   createPost,
   findAllPosts,
+  toggleLikeOnPost,
   type PostCategory,
 } from './community.service.js';
 import { asyncHandler } from '../../handler/async.handler.js';
@@ -54,11 +54,23 @@ export const createCommentHandler = asyncHandler(async (req: Request, res: Respo
 });
 
 export const addLikeHandler = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user?.id;
   const { postId } = req.params;
+
+  if (!userId) {
+    return errorResponse(
+      res,
+      401,
+      'Tidak diizinkan',
+      'ID pengguna tidak ditemukan dalam permintaan'
+    );
+  }
   if (!postId) {
     return errorResponse(res, 400, 'Permintaan Tidak Valid', 'ID postingan diperlukan');
   }
 
-  const post = await addLikeToPost(postId);
-  return successResponse(res, 200, 'Postingan berhasil disukai', { likeCount: post.likeCount });
+  const post = await toggleLikeOnPost(userId, postId);
+  const message = post.isLiked ? 'Postingan berhasil disukai' : 'Suka pada postingan dibatalkan';
+
+  return successResponse(res, 200, message, post);
 });

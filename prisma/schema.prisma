@@ -30,6 +30,7 @@ model User {
   posts    CommunityPost[]
   comments CommunityComment[]
   profile  UserProfile?
+  postLikes CommunityPostLike[]
 }
 
 model Streak {
@@ -81,8 +82,19 @@ model CommunityPost {
   userId       String
   user         User               @relation(fields: [userId], references: [id])
   comments     CommunityComment[]
+  postLikes    CommunityPostLike[]
 
   @@index([userId])
+}
+
+model CommunityPostLike {
+  userId String
+  postId String
+  user   User           @relation(fields: [userId], references: [id])
+  post   CommunityPost  @relation(fields: [postId], references: [id])
+
+  @@id([userId, postId])
+  @@index([postId])
 }
 
 model CommunityComment {
