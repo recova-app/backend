@@ -71,6 +71,7 @@ Sebelum mulai, pastikan sudah install:
 File `.env` digunakan untuk mengkonfigurasi aplikasi. Berikut adalah penjelasan untuk setiap variabel yang ada di `.env.example`:
 
 - `PORT`: Port tempat server akan berjalan (contoh: `3000`).
+- `DOCS_URL`: URL untuk dokumentasi API (contoh: `/docs`).
 - `JWT_SECRET`: Kunci rahasia acak untuk menandatangani token JWT.
 - `GOOGLE_CLIENT_ID`: Client ID dari Google Cloud Console untuk otentikasi Google OAuth.
 - `GEMINI_API_KEY`: Kunci API untuk layanan Google Gemini yang digunakan oleh AI Coach.
