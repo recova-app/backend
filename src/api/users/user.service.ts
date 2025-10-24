@@ -53,3 +53,44 @@ export async function updateUserSettings(
 
   return updatedUser;
 }
+
+export async function resetUserDataForTesting(userId: string) {
+  return prisma.$transaction(async tx => {
+    // Delete all comments related to the user's posts
+    const userPosts = await tx.communityPost.findMany({
+      where: {
+        userId,
+      },
+      select: {
+        id: true,
+      },
+    });
+    const postIds = userPosts.map(post => post.id);
+    if (postIds.length > 0) {
+      await tx.communityComment.deleteMany({
+        where: { postId: { in: postIds } },
+      });
+    }
+
+    // Delete all related data for the user
+    await tx.communityComment.deleteMany({ where: { userId } });
+    await tx.communityPostLike.deleteMany({ where: { userId } });
+    await tx.communityPost.deleteMany({ where: { userId } });
+    await tx.journal.deleteMany({ where: { userId } });
+    await tx.checkin.deleteMany({ where: { userId } });
+    await tx.streak.deleteMany({ where: { userId } });
+    await tx.userProfile.deleteMany({ where: { userId } });
+
+    const resetUser = await tx.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        userWhy: null,
+        checkinTime: null,
+      },
+    });
+
+    return resetUser;
+  });
+}
