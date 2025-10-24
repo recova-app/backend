@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { findUserById, updateUserSettings } from './user.service.js';
+import { findUserById, resetUserDataForTesting, updateUserSettings } from './user.service.js';
 import { asyncHandler } from '../../handler/async.handler.js';
 import { errorResponse, successResponse } from '../../core/response.js';
 
@@ -42,4 +42,29 @@ export const updateUserSettingsHandler = asyncHandler(async (req: Request, res: 
 
   const updatedUser = await updateUserSettings(userId, dataToUpdate);
   return successResponse(res, 200, 'Pengaturan pengguna berhasil diperbarui', updatedUser);
+});
+
+export const resetUserDataHandler = asyncHandler(async (req: Request, res: Response) => {
+  // Uncomment the following lines if you want to restrict this endpoint to development environment only
+  // if (config.nodeEnv !== 'development') {
+  //   return errorResponse(
+  //     res,
+  //     403,
+  //     'Akses ditolak',
+  //     'Endpoint ini hanya dapat diakses di lingkungan pengembangan'
+  //   );
+  // }
+
+  const userId = req.user?.id;
+  if (!userId) {
+    return errorResponse(
+      res,
+      401,
+      'Tidak diizinkan',
+      'ID pengguna tidak ditemukan dalam permintaan'
+    );
+  }
+
+  const result = await resetUserDataForTesting(userId);
+  return successResponse(res, 200, 'Data pengguna berhasil direset', result);
 });
