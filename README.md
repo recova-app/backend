@@ -198,6 +198,7 @@ Semua endpoint berada di bawah prefix: **`/api/v1`**. Pengaturan rute utama terd
 - **`/api/v1/users`**: Rute untuk manajemen profil dan data pengguna.
   - `GET /me` - Ambil detail profil pengguna.
   - `PUT /settings` - Update pengaturan profil.
+  - `DELETE /me/reset-data` - Reset data pengguna untuk testing (hanya untuk development).
 
 - **`/api/v1/ai`**: Rute untuk fitur berbasis AI.
   - `POST /ask-coach` - Kirim pesan ke AI Coach.
