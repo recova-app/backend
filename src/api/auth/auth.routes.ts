@@ -8,6 +8,7 @@ const router = Router();
 
 router.post('/google', validate(googleLoginSchema), googleLoginHandler);
 
-router.post('/onboarding', requireAuth, validate(onboardingSchema), onboardingHandler);
+// router.post('/onboarding', requireAuth, validate(onboardingSchema), onboardingHandler);
+router.post('/onboarding', validate(onboardingSchema), onboardingHandler);
 
 export default router;

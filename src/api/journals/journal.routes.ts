@@ -6,8 +6,10 @@ import { createJournalSchema } from './journal.validation.js';
 
 const router = Router();
 
-router.get('/', requireAuth, getJournalsHandler);
+// router.get('/', requireAuth, getJournalsHandler);
+router.get('/', getJournalsHandler);
 
-router.post('/', requireAuth, validate(createJournalSchema), createJournalHandler);
+// router.post('/', requireAuth, validate(createJournalSchema), createJournalHandler);
+router.post('/', validate(createJournalSchema), createJournalHandler);
 
 export default router;
