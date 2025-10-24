@@ -7,9 +7,11 @@ import { onboardingAnalysisLimiter } from '../../middleware/rateLimiter.middlewa
 
 const router = Router();
 
-router.post('/ask-coach', requireAuth, validate(askCoachSchema), askCoachHandler);
+// router.post('/ask-coach', requireAuth, validate(askCoachSchema), askCoachHandler);
+router.post('/ask-coach', validate(askCoachSchema), askCoachHandler);
 
-router.get('/summary', requireAuth, getSummaryHandler);
+// router.get('/summary', requireAuth, getSummaryHandler);
+router.get('/summary', getSummaryHandler);
 
 router.post('/onboarding-analysis', onboardingAnalysisLimiter, onboardingAnalysisHandler);
 

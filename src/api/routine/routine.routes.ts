@@ -6,8 +6,10 @@ import { dailyCheckinSchema } from './routine.validation.js';
 
 const router = Router();
 
-router.post('/checkin', requireAuth, validate(dailyCheckinSchema), dailyCheckinHandler);
+// router.post('/checkin', requireAuth, validate(dailyCheckinSchema), dailyCheckinHandler);
+router.post('/checkin', validate(dailyCheckinSchema), dailyCheckinHandler);
 
-router.get('/statistics', requireAuth, getStatisticsHandler);
+// router.get('/statistics', requireAuth, getStatisticsHandler);
+router.get('/statistics', getStatisticsHandler);
 
 export default router;
