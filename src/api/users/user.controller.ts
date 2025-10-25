@@ -4,7 +4,7 @@ import { asyncHandler } from '../../handler/async.handler.js';
 import { errorResponse, successResponse } from '../../core/response.js';
 
 export const getMeHandler = asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user?.id;
+  const userId = req.user?.id || req.body.userId; // Temporary support for userId in body for testing purposes
   if (!userId) {
     return errorResponse(
       res,
@@ -28,7 +28,7 @@ export const getMeHandler = asyncHandler(async (req: Request, res: Response) => 
 });
 
 export const updateUserSettingsHandler = asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user?.id;
+  const userId = req.user?.id || req.body.userId; // Temporary support for userId in body for testing purposes
   const dataToUpdate = req.body;
 
   if (!userId) {
@@ -55,7 +55,7 @@ export const resetUserDataHandler = asyncHandler(async (req: Request, res: Respo
   //   );
   // }
 
-  const userId = req.user?.id;
+  const userId = req.user?.id || req.body.userId; // Temporary support for userId in body for testing purposes
   if (!userId) {
     return errorResponse(
       res,
