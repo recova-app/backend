@@ -132,3 +132,24 @@ export async function getUserStatistics(userId: string) {
     streakCalendar: streakCalendarDates,
   };
 }
+
+export async function findUserRelapses(userId: string) {
+  const relapses = await prisma.checkin.findMany({
+    where: {
+      userId,
+      isSuccessful: false,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    include: {
+      journal: {
+        select: {
+          content: true,
+        },
+      },
+    },
+  });
+
+  return relapses;
+}
