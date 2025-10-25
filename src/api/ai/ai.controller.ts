@@ -4,7 +4,7 @@ import { asyncHandler } from '../../handler/async.handler.js';
 import { errorResponse, successResponse } from '../../core/response.js';
 
 export const askCoachHandler = asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user?.id;
+  const userId = req.user?.id || req.body.userId; // Temporary support for userId in body for testing purposes
   const { message: userMessage } = req.body;
 
   if (!userId) {
@@ -23,7 +23,7 @@ export const askCoachHandler = asyncHandler(async (req: Request, res: Response) 
 });
 
 export const getSummaryHandler = asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user?.id;
+  const userId = req.user?.id || req.body.userId; // Temporary support for userId in body for testing purposes
   if (!userId) {
     return errorResponse(
       res,

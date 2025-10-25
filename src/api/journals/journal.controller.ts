@@ -4,7 +4,7 @@ import { asyncHandler } from '../../handler/async.handler.js';
 import { errorResponse, successResponse } from '../../core/response.js';
 
 export const createJournalHandler = asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user?.id;
+  const userId = req.user?.id || req.body.userId; // Temporary support for userId in body for testing purposes
   const { content } = req.body;
 
   if (!userId) {
@@ -21,7 +21,7 @@ export const createJournalHandler = asyncHandler(async (req: Request, res: Respo
 });
 
 export const getJournalsHandler = asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user?.id;
+  const userId = req.user?.id || req.body.userId; // Temporary support for userId in body for testing purposes
   if (!userId) {
     return errorResponse(
       res,

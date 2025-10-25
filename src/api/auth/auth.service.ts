@@ -6,7 +6,7 @@ import { parseCheckinTime } from '../../utils/index.js';
 
 const client = new OAuth2Client(config.google.clientId);
 
-export async function verifyGoogleTokenAndLogin(googleToken: string): Promise<string> {
+export async function verifyGoogleTokenAndLogin(googleToken: string) {
   const ticket = await client.verifyIdToken({
     idToken: googleToken,
     audience: config.google.clientId,
@@ -40,7 +40,10 @@ export async function verifyGoogleTokenAndLogin(googleToken: string): Promise<st
     expiresIn: '1d',
   });
 
-  return jwtToken;
+  return {
+    token: jwtToken,
+    userId: user.id,
+  };
 }
 
 export async function saveOnboardingData(
