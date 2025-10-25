@@ -3,100 +3,124 @@ import prisma from '../prisma.js';
 export async function seedEducationContent() {
   const contents = [
     {
-      title: 'The Science of Pornography Addiction - Your Brain on Porn',
+      title: 'CURE Your PORN ADDICTION | A Doctors Guide to Breaking The Habit',
       description:
-        'Penjelasan ilmiah tentang bagaimana pornografi mempengaruhi otak dan menciptakan kecanduan. Video ini membantu memahami mengapa recovery itu penting dan bagaimana proses penyembuhan bekerja.',
-      url: 'https://www.youtube.com/watch?v=wSF82AwSDiU',
-      thumbnailUrl: 'https://i.ytimg.com/vi/wSF82AwSDiU/maxresdefault.jpg',
+        'Panduan dari dokter untuk menghentikan kecanduan pornografi. Membahas tanda-tanda, dampak, dan langkah-langkah praktis untuk mengatasinya, baik sendiri maupun dengan bantuan profesional.',
+      url: 'http://www.youtube.com/watch?v=D2x6vY3r5K8',
+      thumbnailUrl: 'https://i.ytimg.com/vi/D2x6vY3r5K8/maxresdefault.jpg',
       category: 'Mental Health',
     },
     {
-      title: 'NoFap Benefits: Real Science & Timeline',
+      title: 'LANGKAH PERTAMA UNTUK BERHENTI DARI KECANDUAN PORNOGRAFI',
       description:
-        'Penjelasan timeline dan benefits yang akan dirasakan selama proses NoFap/recovery. Berbasis riset dan pengalaman nyata untuk memberikan ekspektasi yang realistis.',
-      url: 'https://www.youtube.com/watch?v=9mbp7DuiSCQ',
-      thumbnailUrl: 'https://i.ytimg.com/vi/9mbp7DuiSCQ/maxresdefault.jpg',
+        'Penjelasan langkah pertama untuk pulih dari kecanduan pornografi, yaitu mengubah pola pikir dari penolakan menjadi penerimaan dan pentingnya mengubah rutinitas.',
+      url: 'http://www.youtube.com/watch?v=a37iuykI9Io',
+      thumbnailUrl: 'https://i.ytimg.com/vi/a37iuykI9Io/maxresdefault.jpg',
+      category: 'Mental Health',
+    },
+    {
+      title: 'Saat Stop Nonton Video P*rno, Beginilah yang Langsung Terjadi Kepada Tubuh Kalian..',
+      description:
+        'Membahas apa yang terjadi pada tubuh dan pikiran saat berhenti dari kecanduan pornografi, termasuk dampak negatif kecanduan dan timeline pemulihan (hari per hari).',
+      url: 'http://www.youtube.com/watch?v=gJjsm2xcOy8',
+      thumbnailUrl: 'https://i.ytimg.com/vi/gJjsm2xcOy8/maxresdefault.jpg',
+      category: 'Wellness',
+    },
+    {
+      title: 'Cara Memanage Nafsu - Ustadz Adi Hidayat',
+      description:
+        'Kajian dari Ustadz Adi Hidayat tentang cara mengelola dan menata nafsu dari perspektif Islam, serta bagaimana mengubah dorongan negatif menjadi pemicu kebaikan.',
+      url: 'http://www.youtube.com/watch?v=TqZIsmrQ06o',
+      thumbnailUrl: 'https://i.ytimg.com/vi/TqZIsmrQ06o/maxresdefault.jpg',
+      category: 'Spiritual',
+    },
+    {
+      title: 'Apa yang Terjadi Saat Orang Ketagihan Pornografi?',
+      description:
+        "Penjelasan ilmiah dari 'Kok Bisa?' tentang apa yang terjadi pada otak saat kecanduan pornografi, dampaknya pada fungsi kognitif, dan gangguan perilaku.",
+      url: 'http://www.youtube.com/watch?v=Sq1s564ukTI',
+      thumbnailUrl: 'https://i.ytimg.com/vi/Sq1s564ukTI/maxresdefault.jpg',
+      category: 'Mental Health',
+    },
+    {
+      title: "Tips DISIPLIN membangun KEBIASAAN! 💪🏻 Maudy Ayunda's Booklist",
+      description:
+        "Maudy Ayunda membedah buku 'Atomic Habits', memberikan tips praktis untuk membangun disiplin dan kebiasaan baru, seperti fokus pada sistem dan 4 langkah membangun habit.",
+      url: 'http://www.youtube.com/watch?v=uqGf4PWDOUw',
+      thumbnailUrl: 'https://i.ytimg.com/vi/uqGf4PWDOUw/maxresdefault.jpg',
       category: 'Self-Improvement',
     },
     {
-      title: 'Menjaga Pandangan dalam Islam - Ustadz Khalid Basalamah',
+      title: 'Cara Jadi Manusia Baru dalam 7 Hari | Reset Hidup yang lo Benci',
       description:
-        'Kajian mendalam tentang pentingnya menjaga pandangan dalam Islam dan bahaya zina mata. Penguat iman untuk yang sedang berjuang melawan kecanduan.',
-      url: 'https://www.youtube.com/watch?v=X3kJ_3xJqsM',
-      thumbnailUrl: 'https://i.ytimg.com/vi/X3kJ_3xJqsM/maxresdefault.jpg',
-      category: 'Mental Health',
-    },
-    {
-      title: 'How to Overcome Porn Addiction - Practical Strategy',
-      description:
-        'Strategi praktis dan actionable untuk mengatasi kecanduan pornografi. Mencakup tips menghindari trigger, membangun accountability, dan recovery plan.',
-      url: 'https://www.youtube.com/watch?v=FmjjxdDwOIc',
-      thumbnailUrl: 'https://i.ytimg.com/vi/FmjjxdDwOIc/maxresdefault.jpg',
+        "Strategi 'reset' hidup dari Agusleo Halim. Membahas cara kerja otak sebagai komputer dan pentingnya menutup 'tab' negatif (penyesalan, komplain) dan membuka 'tab' positif.",
+      url: 'http://www.youtube.com/watch?v=gPdKGv9ZuAU',
+      thumbnailUrl: 'https://i.ytimg.com/vi/gPdKGv9ZuAU/maxresdefault.jpg',
       category: 'Self-Improvement',
     },
     {
-      title: 'Dealing with Urges and Triggers - Recovery Tips',
+      title: 'Kamu Malas Tapi Harus Produktif? Ini Rahasia Biar Otak Ngegas Lagi!',
       description:
-        'Teknik dan strategi untuk mengatasi urge dan trigger saat recovery. Video ini memberikan tools praktis yang bisa langsung diterapkan saat menghadapi godaan.',
-      url: 'https://www.youtube.com/watch?v=kKhAx_cZ-14',
-      thumbnailUrl: 'https://i.ytimg.com/vi/kKhAx_cZ-14/maxresdefault.jpg',
-      category: 'Mental Health',
+        "Tips 'hacking' otak dari Plus Satu Persen untuk mengatasi malas dan menjadi produktif, menggunakan teknik seperti 'Two-Minute Rule', 'Reward Sandwich', dan 'Environment Design'.",
+      url: 'http://www.youtube.com/watch?v=WMfRHf5kjsE',
+      thumbnailUrl: 'https://i.ytimg.com/vi/WMfRHf5kjsE/maxresdefault.jpg',
+      category: 'Productivity',
     },
     {
-      title: 'Guided Meditation for Addiction Recovery',
+      title: 'How to Be So Productive it Feels ILLEGAL',
       description:
-        'Meditasi terpandu khusus untuk membantu proses recovery dari kecanduan. Membantu menenangkan pikiran dan mengurangi anxiety. Cocok dilakukan setiap hari.',
-      url: 'https://www.youtube.com/watch?v=SEfs5TJZ6NA',
-      thumbnailUrl: 'https://i.ytimg.com/vi/SEfs5TJZ6NA/maxresdefault.jpg',
+        "10 'hacks' produktivitas dari Dan Martell untuk mendapatkan fokus super. Meliputi 'not-to-do list', 'focus triggers', 'start on hard mode', dan 'gamify your work'.",
+      url: 'http://www.youtube.com/watch?v=hSGt_rhu49U',
+      thumbnailUrl: 'https://i.ytimg.com/vi/hSGt_rhu49U/maxresdefault.jpg',
+      category: 'Productivity',
+    },
+    {
+      title: "Kunci dari Kebahagiaan = Bersikap Bodo Amat?! Maudy Ayunda's Booklist",
+      description:
+        "Maudy Ayunda membedah buku 'The Subtle Art of Not Giving a F*ck', membahas tentang pentingnya memilih hal yang dipedulikan dan menemukan kebahagiaan di hal-hal kecil.",
+      url: 'http://www.youtube.com/watch?v=dAI12OGD04A',
+      thumbnailUrl: 'https://i.ytimg.com/vi/dAI12OGD04A/maxresdefault.jpg',
       category: 'Mindfulness',
     },
     {
-      title: 'Jangan Berzina! Bahaya dan Hukumnya - Ustadz Hanan Attaki',
+      title: 'Supaya Hidup Gak Overthinking..',
       description:
-        'Kajian tentang bahaya zina dan pornografi dari perspektif Islam. Sangat powerful untuk memperkuat motivasi spiritual dalam recovery.',
-      url: 'https://www.youtube.com/watch?v=rKK5v8vC-kU',
-      thumbnailUrl: 'https://i.ytimg.com/vi/rKK5v8vC-kU/maxresdefault.jpg',
-      category: 'Mental Health',
+        "Obrolan Raditya Dika dan Henry Manampiring (penulis Filosofi Teras) tentang Stoikisme, 'dikotomi kendali', dan cara praktis menerapkannya agar tidak overthinking.",
+      url: 'http://www.youtube.com/watch?v=9qwR3GmR63I',
+      thumbnailUrl: 'https://i.ytimg.com/vi/9qwR3GmR63I/maxresdefault.jpg',
+      category: 'Mindfulness',
     },
     {
-      title: 'The Reboot: Rebooting from Porn Addiction',
+      title: 'Cara Meningkatkan IQ dan Kecerdasan Otak',
       description:
-        'Penjelasan lengkap tentang proses reboot/recovery dari kecanduan pornografi. Mencakup fase-fase recovery, flatline, dan tips bertahan hingga akhir.',
-      url: 'https://www.youtube.com/watch?v=_rz8b2I7H8I',
-      thumbnailUrl: 'https://i.ytimg.com/vi/_rz8b2I7H8I/maxresdefault.jpg',
+        "Ferry Irwandi membahas cara meningkatkan kecerdasan otak, bukan hanya soal skor IQ. Tipsnya meliputi bermain game strategis, 'chunking' informasi, dan belajar musik.",
+      url: 'http://www.youtube.com/watch?v=H-DeO-hnyTc',
+      thumbnailUrl: 'https://i.ytimg.com/vi/H-DeO-hnyTc/maxresdefault.jpg',
       category: 'Self-Improvement',
     },
     {
-      title: 'Cold Shower Benefits for NoFap Recovery',
+      title: 'Mengatasi Rasa Kesepian (Rahasia Menghadapi Kesepian)',
       description:
-        'Manfaat cold shower untuk proses recovery dan cara melakukannya dengan benar. Cold shower adalah salah satu tool paling efektif untuk mengatasi urge.',
-      url: 'https://www.youtube.com/watch?v=ZfZb7LqmD10',
-      thumbnailUrl: 'https://i.ytimg.com/vi/ZfZb7LqmD10/maxresdefault.jpg',
-      category: 'Wellness',
-    },
-    {
-      title: 'Building Healthy Habits to Replace Addiction',
-      description:
-        'Cara membangun kebiasaan sehat untuk menggantikan kebiasaan buruk. Berdasarkan konsep Atomic Habits yang sangat applicable untuk recovery journey.',
-      url: 'https://www.youtube.com/watch?v=PZ7lDrwYdZc',
-      thumbnailUrl: 'https://i.ytimg.com/vi/PZ7lDrwYdZc/maxresdefault.jpg',
-      category: 'Self-Improvement',
-    },
-    {
-      title: 'Sleep Better: Tips for Recovery',
-      description:
-        'Tips berbasis sains untuk meningkatkan kualitas tidur. Tidur yang berkualitas sangat crucial dalam proses recovery karena membantu penyembuhan otak.',
-      url: 'https://www.youtube.com/watch?v=nm1TxQj9IsQ',
-      thumbnailUrl: 'https://i.ytimg.com/vi/nm1TxQj9IsQ/maxresdefault.jpg',
-      category: 'Wellness',
-    },
-    {
-      title: 'Mengelola Nafsu - Kajian Singkat',
-      description:
-        'Kajian Islam tentang cara mengelola nafsu dengan bijak. Memberikan perspektif spiritual yang penting dalam perjalanan recovery.',
-      url: 'https://www.youtube.com/watch?v=5p7dN8kLcV4',
-      thumbnailUrl: 'https://i.ytimg.com/vi/5p7dN8kLcV4/maxresdefault.jpg',
+        'Penjelasan dari Satu Persen tentang apa itu kesepian, bahayanya bagi kesehatan fisik dan mental, dan strategi praktis untuk mengatasinya dengan membangun koneksi sosial.',
+      url: 'http://www.youtube.com/watch?v=0b9Qzow_lv0',
+      thumbnailUrl: 'https://i.ytimg.com/vi/0b9Qzow_lv0/maxresdefault.jpg',
       category: 'Mental Health',
+    },
+    {
+      title: 'Yang Capek Jadi Dewasa, Nonton Ini!',
+      description:
+        'Diskusi Raditya Dika dan psikolog Nago Tejema tentang lelahnya menjadi dewasa, kehilangan otentisitas diri, dan bagaimana masalah di masa lalu (terutama dengan orang tua) mempengaruhinya.',
+      url: 'http://www.youtube.com/watch?v=ZOQhVk_YuSY',
+      thumbnailUrl: 'https://i.ytimg.com/vi/ZOQhVk_YuSY/maxresdefault.jpg',
+      category: 'Mental Health',
+    },
+    {
+      title: 'Rahasia Jadi Manusia BERVALUE Tanpa Harus Jadi Orang Lain! | SUARA BERKELAS #54',
+      description:
+        "Obrolan Raditya Dika di Suara Berkelas tentang menjadi manusia 'ber-value'. Membahas beda introvert dan pemalu, pentingnya rasa bangga dalam bekerja, dan digital product.",
+      url: 'http://www.youtube.com/watch?v=E14rVsVJk0M',
+      thumbnailUrl: 'https://i.ytimg.com/vi/E14rVsVJk0M/maxresdefault.jpg',
+      category: 'Self-Improvement',
     },
   ];
 

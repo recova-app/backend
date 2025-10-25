@@ -5,13 +5,13 @@ import { errorResponse, successResponse } from '../../core/response.js';
 
 export const googleLoginHandler = asyncHandler(async (req: Request, res: Response) => {
   const { token } = req.body;
-  const jwtToken = await verifyGoogleTokenAndLogin(token);
+  const result = await verifyGoogleTokenAndLogin(token);
 
-  return successResponse(res, 200, 'Login berhasil', { token: jwtToken });
+  return successResponse(res, 200, 'Login berhasil', result);
 });
 
 export const onboardingHandler = asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user?.id;
+  const userId = req.user?.id || req.body.userId; // Temporary support for userId in body for testing purposes
   const onboardingData = req.body;
 
   if (!userId) {
