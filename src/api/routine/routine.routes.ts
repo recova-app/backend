@@ -1,5 +1,9 @@
 import { Router } from 'express';
-import { dailyCheckinHandler, getStatisticsHandler } from './routine.controller.js';
+import {
+  dailyCheckinHandler,
+  getRelapsesHandler,
+  getStatisticsHandler,
+} from './routine.controller.js';
 import { requireAuth } from '../../middleware/auth.middleware.js';
 import { validate } from '../../middleware/validate.middleware.js';
 import { dailyCheckinSchema } from './routine.validation.js';
@@ -11,5 +15,8 @@ router.post('/checkin', validate(dailyCheckinSchema), dailyCheckinHandler);
 
 // router.get('/statistics', requireAuth, getStatisticsHandler);
 router.get('/statistics', getStatisticsHandler);
+
+// router.get('/relapses', requireAuth, getRelapsesHandler);
+router.get('/relapses', getRelapsesHandler);
 
 export default router;

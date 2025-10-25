@@ -208,6 +208,7 @@ Semua endpoint berada di bawah prefix: **`/api/v1`**. Pengaturan rute utama terd
 - **`/api/v1/routine`**: Rute untuk rutinitas harian dan statistik.
   - `POST /checkin` - Check-in harian.
   - `GET /statistics` - Statistik (streak, dll).
+  - `GET /relapses` - Ambil riwayat relapse pengguna.
 
 - **`/api/v1/journals`**: Rute untuk jurnal pribadi pengguna.
   - `GET /` - Ambil semua entri jurnal.
