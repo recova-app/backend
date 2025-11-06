@@ -4,7 +4,7 @@ import { asyncHandler } from '../../handler/async.handler.js';
 import { errorResponse, successResponse } from '../../core/response.js';
 
 export const dailyCheckinHandler = asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user?.id || req.body.userId; // Temporary support for userId in body for testing purposes
+  const userId = req.user?.id || req.body?.userId; // Temporary support for userId in body for testing purposes
   const checkinData = req.body;
 
   if (!userId) {
@@ -21,7 +21,7 @@ export const dailyCheckinHandler = asyncHandler(async (req: Request, res: Respon
 });
 
 export const getStatisticsHandler = asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user?.id || req.body.userId; // Temporary support for userId in body for testing purposes
+  const userId = req.user?.id || req.body?.userId; // Temporary support for userId in body for testing purposes
   if (!userId) {
     return errorResponse(
       res,
@@ -36,7 +36,7 @@ export const getStatisticsHandler = asyncHandler(async (req: Request, res: Respo
 });
 
 export const getRelapsesHandler = asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user?.id || req.body.userId; // Temporary support for userId in body for testing purposes
+  const userId = req.user?.id || req.body?.userId; // Temporary support for userId in body for testing purposes
   if (!userId) {
     return errorResponse(
       res,

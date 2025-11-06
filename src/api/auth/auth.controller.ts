@@ -11,7 +11,7 @@ export const googleLoginHandler = asyncHandler(async (req: Request, res: Respons
 });
 
 export const onboardingHandler = asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user?.id || req.body.userId; // Temporary support for userId in body for testing purposes
+  const userId = req.user?.id || req.body?.userId; // Temporary support for userId in body for testing purposes
   const onboardingData = req.body;
 
   if (!userId) {
