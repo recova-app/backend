@@ -1,10 +1,14 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI, type Content } from '@google/generative-ai';
 import config from '../config/index.js';
 
 const genAI = new GoogleGenerativeAI(config.gemini.apiKey);
 const model = genAI.getGenerativeModel({ model: config.gemini.model });
 
-export function startCoachChat(systemPrompt: string, nickname: string) {
+export function startCoachChat(
+  systemPrompt: string,
+  nickname: string,
+  chatHistory: Content[] = []
+) {
   return model.startChat({
     history: [
       {
@@ -23,6 +27,7 @@ export function startCoachChat(systemPrompt: string, nickname: string) {
           },
         ],
       },
+      ...chatHistory,
     ],
   });
 }
@@ -38,11 +43,12 @@ export async function generateJsonContent(prompt: string): Promise<object> {
   const result = await model.generateContent(prompt);
   const rawResponse = result.response.text();
 
+  const jsonString = rawResponse
+    .replace(/```json/g, '')
+    .replace(/```/g, '')
+    .trim();
+
   try {
-    const jsonString = rawResponse
-      .replace(/```json/g, '')
-      .replace(/```/g, '')
-      .trim();
     const parsedJson = JSON.parse(jsonString);
     return parsedJson;
   } catch (error) {
