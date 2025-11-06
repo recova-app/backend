@@ -10,7 +10,7 @@ import { asyncHandler } from '../../handler/async.handler.js';
 import { errorResponse, successResponse } from '../../core/response.js';
 
 export const createPostHandler = asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user?.id || req.body.userId; // Temporary support for userId in body for testing purposes
+  const userId = req.user?.id || req.body?.userId; // Temporary support for userId in body for testing purposes
   const postData = req.body;
 
   if (!userId) {
@@ -27,13 +27,24 @@ export const createPostHandler = asyncHandler(async (req: Request, res: Response
 });
 
 export const getPostsHandler = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user?.id || req.body?.userId; // Temporary support for userId in body for testing purposes
   const category = req.query.category as PostCategory | undefined;
+
+  if (!userId) {
+    return errorResponse(
+      res,
+      401,
+      'Tidak diizinkan',
+      'ID pengguna tidak ditemukan dalam permintaan'
+    );
+  }
+
   const posts = await findAllPosts(category);
   return successResponse(res, 200, 'Postingan berhasil diambil', posts);
 });
 
 export const createCommentHandler = asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user?.id || req.body.userId; // Temporary support for userId in body for testing purposes
+  const userId = req.user?.id || req.body?.userId; // Temporary support for userId in body for testing purposes
   const { postId } = req.params;
   const { content } = req.body;
 
@@ -54,7 +65,7 @@ export const createCommentHandler = asyncHandler(async (req: Request, res: Respo
 });
 
 export const addLikeHandler = asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user?.id || req.body.userId; // Temporary support for userId in body for testing purposes
+  const userId = req.user?.id || req.body?.userId; // Temporary support for userId in body for testing purposes
   const { postId } = req.params;
 
   if (!userId) {

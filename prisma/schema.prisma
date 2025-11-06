@@ -24,13 +24,14 @@ model User {
   updatedAt   DateTime  @updatedAt
 
   // Relations
-  streaks  Streak[]
-  checkins Checkin[]
-  journals Journal[]
-  posts    CommunityPost[]
-  comments CommunityComment[]
-  profile  UserProfile?
-  postLikes CommunityPostLike[]
+  streaks         Streak[]
+  checkins        Checkin[]
+  journals        Journal[]
+  posts           CommunityPost[]
+  comments        CommunityComment[]
+  profile         UserProfile?
+  postLikes       CommunityPostLike[]
+  aiChatHistories AiChatHistory[]
 }
 
 model Streak {
@@ -72,15 +73,15 @@ model Journal {
 }
 
 model CommunityPost {
-  id           String             @id @default(uuid())
+  id           String              @id @default(uuid())
   title        String?
   content      String
-  category     String             @default("advice")
-  commentCount Int                @default(0)
-  likeCount    Int                @default(0)
-  createdAt    DateTime           @default(now())
+  category     String              @default("advice")
+  commentCount Int                 @default(0)
+  likeCount    Int                 @default(0)
+  createdAt    DateTime            @default(now())
   userId       String
-  user         User               @relation(fields: [userId], references: [id])
+  user         User                @relation(fields: [userId], references: [id])
   comments     CommunityComment[]
   postLikes    CommunityPostLike[]
 
@@ -90,8 +91,8 @@ model CommunityPost {
 model CommunityPostLike {
   userId String
   postId String
-  user   User           @relation(fields: [userId], references: [id])
-  post   CommunityPost  @relation(fields: [postId], references: [id])
+  user   User          @relation(fields: [userId], references: [id])
+  post   CommunityPost @relation(fields: [postId], references: [id])
 
   @@id([userId, postId])
   @@index([postId])
@@ -137,4 +138,15 @@ model DailyMotivation {
 model DailyChallenge {
   id      String @id @default(uuid())
   content String @unique
+}
+
+model AiChatHistory {
+  id        String   @id @default(uuid())
+  role      String
+  content   String
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId, createdAt])
 }

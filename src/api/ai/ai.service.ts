@@ -29,13 +29,45 @@ export async function getCoachResponse(userId: string, userMessage: string): Pro
     userWhy: user.userWhy,
   });
 
+  const dbHistory = await prisma.aiChatHistory.findMany({
+    where: {
+      userId,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    take: 10,
+  });
+
+  const formattedHistory = dbHistory.reverse().map(msg => ({
+    role: msg.role as 'user' | 'model',
+    parts: [{ text: msg.content }],
+  }));
+
   // Start a chat session with the AI coach
-  const chat = startCoachChat(systemPrompt, user.nickname);
+  const chat = startCoachChat(systemPrompt, user.nickname, formattedHistory);
 
   const result = await chat.sendMessage(userMessage);
-  const response = result.response;
+  const aiResponseText = result.response.text();
 
-  return response.text();
+  await Promise.all([
+    prisma.aiChatHistory.create({
+      data: {
+        userId,
+        role: 'user',
+        content: userMessage,
+      },
+    }),
+    prisma.aiChatHistory.create({
+      data: {
+        userId,
+        role: 'model',
+        content: aiResponseText,
+      },
+    }),
+  ]);
+
+  return aiResponseText;
 }
 
 export async function getLatestSummary(userId: string): Promise<string> {
