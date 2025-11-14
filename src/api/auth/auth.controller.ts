@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
 import { saveOnboardingData, verifyGoogleTokenAndLogin } from './auth.service.js';
+import { analyzeOnboardingAnswers } from '../ai/ai.service.js';
 import { asyncHandler } from '../../handler/async.handler.js';
 import { errorResponse, successResponse } from '../../core/response.js';
 
@@ -24,6 +25,10 @@ export const onboardingHandler = asyncHandler(async (req: Request, res: Response
   }
 
   const profile = await saveOnboardingData(userId, onboardingData);
+  const aiSummary = await analyzeOnboardingAnswers(onboardingData);
 
-  return successResponse(res, 201, 'Data onboarding berhasil disimpan', profile);
+  return successResponse(res, 201, 'Data onboarding berhasil disimpan', {
+    profile,
+    aiSummary,
+  });
 });

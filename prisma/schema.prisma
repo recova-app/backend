@@ -122,7 +122,7 @@ model EducationContent {
 model UserProfile {
   id              String   @id @default(uuid())
   answers         Json
-  dependencyLevel String
+  dependencyLevel String?
   aiSummary       String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
