@@ -9,12 +9,7 @@ export const googleLoginSchema = z.object({
 export const onboardingSchema = z.object({
   body: z.object({
     answers: z.record(z.string(), z.unknown()),
-    dependencyLevel: z
-      .string()
-      .min(1, 'Tingkat ketergantungan harus diisi')
-      .trim()
-      .optional()
-      .refine(val => !val || val.length > 0, { message: 'Tingkat ketergantungan harus diisi' }),
+    dependencyLevel: z.string().min(1, 'Tingkat ketergantungan harus diisi').trim().optional(),
     userWhy: z
       .string()
       .optional()
@@ -25,9 +20,6 @@ export const onboardingSchema = z.object({
         message: 'Format waktu check-in tidak valid, gunakan format HH:mm',
       })
       .trim()
-      .optional()
-      .refine(val => !val || /^([01]\d|2[0-3]):([0-5]\d)$/.test(val), {
-        message: 'Format waktu check-in tidak valid, gunakan format HH:mm',
-      }),
+      .optional(),
   }),
 });

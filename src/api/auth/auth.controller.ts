@@ -25,10 +25,17 @@ export const onboardingHandler = asyncHandler(async (req: Request, res: Response
   }
 
   const profile = await saveOnboardingData(userId, onboardingData);
-  const aiSummary = await analyzeOnboardingAnswers(onboardingData);
+
+  let aiSummary;
+  try {
+    aiSummary = await analyzeOnboardingAnswers(onboardingData.answers);
+  } catch (error) {
+    console.error('AI summary generation failed:', error);
+    aiSummary = { error: 'AI summary tidak tersedia saat ini' };
+  }
 
   return successResponse(res, 201, 'Data onboarding berhasil disimpan', {
-    profile,
+    ...profile,
     aiSummary,
   });
 });
