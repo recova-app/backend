@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
 import { saveOnboardingData, verifyGoogleTokenAndLogin } from './auth.service.js';
+import { analyzeOnboardingAnswers } from '../ai/ai.service.js';
 import { asyncHandler } from '../../handler/async.handler.js';
 import { errorResponse, successResponse } from '../../core/response.js';
 
@@ -25,5 +26,16 @@ export const onboardingHandler = asyncHandler(async (req: Request, res: Response
 
   const profile = await saveOnboardingData(userId, onboardingData);
 
-  return successResponse(res, 201, 'Data onboarding berhasil disimpan', profile);
+  let aiSummary;
+  try {
+    aiSummary = await analyzeOnboardingAnswers(onboardingData.answers);
+  } catch (error) {
+    console.error('AI summary generation failed:', error);
+    aiSummary = { error: 'AI summary tidak tersedia saat ini' };
+  }
+
+  return successResponse(res, 201, 'Data onboarding berhasil disimpan', {
+    ...profile,
+    aiSummary,
+  });
 });

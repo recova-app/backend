@@ -50,9 +50,9 @@ export async function saveOnboardingData(
   userId: string,
   data: {
     answers: Record<string, any>;
-    dependencyLevel: string;
+    dependencyLevel?: string;
     userWhy?: string;
-    checkinTime: string;
+    checkinTime?: string;
   }
 ) {
   const { answers, dependencyLevel, userWhy, checkinTime } = data;
@@ -69,12 +69,12 @@ export async function saveOnboardingData(
   const userProfile = await prisma.userProfile.create({
     data: {
       answers,
-      dependencyLevel,
+      dependencyLevel: dependencyLevel || null,
       userId,
     },
   });
 
-  const formattedCheckinTime = parseCheckinTime(checkinTime);
+  const formattedCheckinTime = parseCheckinTime(checkinTime || '09:00');
 
   if (userWhy || formattedCheckinTime) {
     await prisma.user.update({
