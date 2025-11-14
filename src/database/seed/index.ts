@@ -15,6 +15,7 @@ async function main() {
 
   console.log('[database]: Resetting existing data...');
   await prisma.communityComment.deleteMany();
+  await prisma.communityPostLike.deleteMany();
   await prisma.communityPost.deleteMany();
   await prisma.journal.deleteMany();
   await prisma.checkin.deleteMany();
@@ -23,6 +24,7 @@ async function main() {
   await prisma.educationContent.deleteMany();
   await prisma.dailyMotivation.deleteMany();
   await prisma.dailyChallenge.deleteMany();
+  await prisma.aiChatHistory.deleteMany();
   await prisma.user.deleteMany();
 
   console.log('[database]: Starting full seeding process...');
