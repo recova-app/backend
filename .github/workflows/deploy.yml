@@ -25,21 +25,21 @@ jobs:
             cd ${{ secrets.REMOTE_PATH }}
 
             echo "Pulling latest changes from main branch..."
-            sudo git pull origin main --rebase --autostash
+            git pull origin main --rebase --autostash
 
             echo "Validating docker-compose config..."
-            sudo docker-compose config -q
+            docker-compose config -q
 
             echo "Stopping old containers..."
-            sudo docker-compose down
+            docker-compose down
 
             echo "Building and starting new containers..."
-            sudo docker-compose up --build -d
+            docker-compose up --build -d
 
             echo "Running database migrations..."
-            sudo docker-compose exec -T api npm run db:deploy
+            docker-compose exec -T api npm run db:deploy
 
             echo "Pruning unused docker images..."
-            sudo docker image prune -f
+            docker image prune -f
 
             echo "Deployment successful!"
