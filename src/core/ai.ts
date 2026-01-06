@@ -35,12 +35,20 @@ export function startCoachChat(
       role: 'assistant',
       content: `Tentu, aku siap mendengarkan ${nickname}. Apa yang sedang kamu rasakan?`,
     },
-    ...chatHistory.map(
-      (message): OpenAI.Chat.ChatCompletionMessageParam => ({
-        role: message.role === 'model' ? 'assistant' : 'user',
-        content: message.parts[0]?.text || '',
-      })
-    ),
+    ...chatHistory
+      .filter(
+        (message): message is ChatHistoryMessage =>
+          Array.isArray(message.parts) &&
+          message.parts.length > 0 &&
+          typeof message.parts[0]?.text === 'string' &&
+          message.parts[0]?.text.trim() !== ''
+      )
+      .map(
+        (message): OpenAI.Chat.ChatCompletionMessageParam => ({
+          role: message.role === 'model' ? 'assistant' : 'user',
+          content: message.parts[0]?.text || '',
+        })
+      ),
   ];
 
   return {
