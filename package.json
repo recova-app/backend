@@ -41,6 +41,7 @@
     "google-auth-library": "^10.3.0",
     "jsonwebtoken": "^9.0.2",
     "node-cron": "^4.2.1",
+    "openai": "^6.15.0",
     "zod": "^4.1.5"
   },
   "devDependencies": {
