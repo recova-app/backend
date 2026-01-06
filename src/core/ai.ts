@@ -1,57 +1,97 @@
-import { GoogleGenerativeAI, type Content } from '@google/generative-ai';
+import OpenAI from 'openai';
 import config from '../config/index.js';
 
-const genAI = new GoogleGenerativeAI(config.gemini.apiKey);
-const model = genAI.getGenerativeModel({ model: config.gemini.model });
+const openai = new OpenAI({
+  apiKey: config.openai.apiKey,
+  baseURL: config.openai.baseUrl,
+});
+
+interface ChatHistoryMessage {
+  role: 'user' | 'model';
+  parts: Array<{ text: string }>;
+}
+
+interface CoachChatResponse {
+  response: {
+    text: () => string;
+  };
+}
+
+interface CoachChat {
+  sendMessage: (userMessage: string) => Promise<CoachChatResponse>;
+}
 
 export function startCoachChat(
   systemPrompt: string,
   nickname: string,
-  chatHistory: Content[] = []
-) {
-  return model.startChat({
-    history: [
-      {
-        role: 'user',
-        parts: [
-          {
-            text: systemPrompt,
-          },
-        ],
-      },
-      {
-        role: 'model',
-        parts: [
-          {
-            text: `Tentu, aku siap mendengarkan ${nickname}. Apa yang sedang kamu rasakan?`,
-          },
-        ],
-      },
-      ...chatHistory,
-    ],
-  });
+  chatHistory: ChatHistoryMessage[] = []
+): CoachChat {
+  const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
+    {
+      role: 'system',
+      content: systemPrompt,
+    },
+    {
+      role: 'assistant',
+      content: `Tentu, aku siap mendengarkan ${nickname}. Apa yang sedang kamu rasakan?`,
+    },
+    ...chatHistory
+      .filter(
+        (message): message is ChatHistoryMessage =>
+          Array.isArray(message.parts) &&
+          message.parts.length > 0 &&
+          typeof message.parts[0]?.text === 'string' &&
+          message.parts[0]?.text.trim() !== ''
+      )
+      .map(
+        (message): OpenAI.Chat.ChatCompletionMessageParam => ({
+          role: message.role === 'model' ? 'assistant' : 'user',
+          content: message.parts[0]?.text || '',
+        })
+      ),
+  ];
+
+  return {
+    sendMessage: async (userMessage: string): Promise<CoachChatResponse> => {
+      messages.push({ role: 'user', content: userMessage });
+
+      const response = await openai.chat.completions.create({
+        model: config.openai.model,
+        messages: messages,
+      });
+
+      const aiText = response.choices[0]?.message?.content || '';
+
+      return {
+        response: {
+          text: (): string => aiText,
+        },
+      };
+    },
+  };
 }
 
 export async function generateContent(prompt: string): Promise<string> {
-  const result = await model.generateContent(prompt);
-  const response = result.response;
+  const response = await openai.chat.completions.create({
+    model: config.openai.model,
+    messages: [{ role: 'user', content: prompt }],
+  });
 
-  return response.text();
+  return response.choices[0]?.message?.content || '';
 }
 
 export async function generateJsonContent(prompt: string): Promise<object> {
-  const result = await model.generateContent(prompt);
-  const rawResponse = result.response.text();
+  const response = await openai.chat.completions.create({
+    model: config.openai.model,
+    messages: [{ role: 'user', content: prompt }],
+    response_format: { type: 'json_object' },
+  });
 
-  const jsonString = rawResponse
-    .replace(/```json/g, '')
-    .replace(/```/g, '')
-    .trim();
+  const rawResponse = response.choices[0]?.message?.content || '{}';
 
   try {
-    const parsedJson = JSON.parse(jsonString);
-    return parsedJson;
+    return JSON.parse(rawResponse);
   } catch (error) {
-    throw new Error('AI returned an invalid JSON format');
+    throw new Error('AI mengembalikan format JSON yang tidak valid.');
   }
 }

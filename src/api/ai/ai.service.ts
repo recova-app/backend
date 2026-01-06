@@ -70,6 +70,19 @@ export async function getCoachResponse(userId: string, userMessage: string): Pro
   return aiResponseText;
 }
 
+export async function findAllChatHistory(userId: string) {
+  const history = await prisma.aiChatHistory.findMany({
+    where: {
+      userId,
+    },
+    orderBy: {
+      createdAt: 'asc',
+    },
+  });
+
+  return history;
+}
+
 export async function getLatestSummary(userId: string): Promise<string> {
   const userProfile = await prisma.userProfile.findUnique({
     where: {

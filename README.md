@@ -3,7 +3,7 @@
 Selamat datang di **Recova Backend API** 👋
 Proyek ini menyediakan layanan backend untuk aplikasi **Recova**, yang dirancang untuk membantu pengguna dalam perjalanan pemulihan dan pembentukan kebiasaan positif.
 
-## 🚀 Fitur Utama
+## Fitur Utama
 
 - **Autentikasi Pengguna** - Login aman menggunakan Google OAuth & JWT.
 - **Manajemen Profil** - Atur profil (nama panggilan, alasan pemulihan, waktu check-in harian).
@@ -16,7 +16,7 @@ Proyek ini menyediakan layanan backend untuk aplikasi **Recova**, yang dirancang
 - **AI Coach** - Pendamping virtual yang memberikan dukungan emosional dan motivasi.
 - **Konten Harian** - Motivasi dan tantangan harian untuk menginspirasi pengguna.
 
-## 🛠️ Teknologi yang Digunakan
+## Teknologi yang Digunakan
 
 - **Runtime**: [Node.js](https://nodejs.org/)
 - **Framework**: [Express.js](https://expressjs.com/)
@@ -27,7 +27,7 @@ Proyek ini menyediakan layanan backend untuk aplikasi **Recova**, yang dirancang
 - **Validasi**: [Zod](https://zod.dev/)
 - **Autentikasi**: [JWT](https://www.jwt.io/) & [Google OAuth](https://developers.google.com/identity/protocols/oauth2?hl=id)
 
-## 📦 Prasyarat
+## Prasyarat
 
 Sebelum mulai, pastikan sudah install:
 
@@ -36,7 +36,7 @@ Sebelum mulai, pastikan sudah install:
 - [PostgreSQL](https://www.postgresql.org/)
 - [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/) (Opsional, untuk menjalankan dengan container)
 
-## ⚡ Instalasi
+## Instalasi
 
 1. **Clone repositori**
 
@@ -66,22 +66,45 @@ Sebelum mulai, pastikan sudah install:
    npm run db:migrate
    ```
 
-## ⚙️ Variabel Lingkungan (.env)
+## Variabel Lingkungan (.env)
 
 File `.env` digunakan untuk mengkonfigurasi aplikasi. Berikut adalah penjelasan untuk setiap variabel yang ada di `.env.example`:
 
-- `PORT`: Port tempat server akan berjalan (contoh: `3000`).
-- `DOCS_URL`: URL untuk dokumentasi API (contoh: `/docs`).
-- `JWT_SECRET`: Kunci rahasia acak untuk menandatangani token JWT.
-- `GOOGLE_CLIENT_ID`: Client ID dari Google Cloud Console untuk otentikasi Google OAuth.
-- `GEMINI_API_KEY`: Kunci API untuk layanan Google Gemini yang digunakan oleh AI Coach.
-- `GEMINI_MODEL`: Model AI Gemini yang akan digunakan (contoh: `gemini-2.0-flash`).
-- `DATABASE_USER`: Nama pengguna untuk database PostgreSQL.
-- `DATABASE_PASSWORD`: Kata sandi untuk database PostgreSQL.
-- `DATABASE_NAME`: Nama database yang akan digunakan.
-- `DATABASE_URL`: URL koneksi lengkap ke database PostgreSQL. Format: `postgresql://USER:PASSWORD@HOST:PORT/DATABASE`.
+### Application
 
-## ▶️ Menjalankan Aplikasi
+| Variabel   | Deskripsi                            | Contoh                          |
+| ---------- | ------------------------------------ | ------------------------------- |
+| `PORT`     | Port tempat server akan berjalan.    | `3000`                          |
+| `NODE_ENV` | Mode environment aplikasi.           | `development` atau `production` |
+| `DOCS_URL` | URL untuk dokumentasi API eksternal. | `https://docs.example.com`      |
+
+### JWT & Authentication
+
+| Variabel           | Deskripsi                                                                                               | Contoh                                     |
+| ------------------ | ------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| `JWT_SECRET`       | Kunci rahasia acak untuk menandatangani token JWT. Gunakan string acak yang kuat.                       | `my-super-secret-key-123`                  |
+| `GOOGLE_CLIENT_ID` | Client ID dari [Google Cloud Console](https://console.cloud.google.com/) untuk otentikasi Google OAuth. | `123456789-abc.apps.googleusercontent.com` |
+
+### AI Configuration
+
+| Variabel          | Deskripsi                                                                                     | Contoh                      |
+| ----------------- | --------------------------------------------------------------------------------------------- | --------------------------- |
+| `GEMINI_API_KEY`  | Kunci API untuk layanan [Google Gemini](https://ai.google.dev/) yang digunakan oleh AI Coach. | `AIzaSy...`                 |
+| `GEMINI_MODEL`    | Model AI Gemini yang akan digunakan.                                                          | `gemini-2.0-flash`          |
+| `OPENAI_API_KEY`  | Kunci API untuk layanan OpenAI (opsional, sebagai alternatif Gemini).                         | `sk-...`                    |
+| `OPENAI_MODEL`    | Model OpenAI yang akan digunakan.                                                             | `gpt-4o`                    |
+| `OPENAI_BASE_URL` | Base URL untuk API OpenAI (untuk API yang kompatibel dengan OpenAI).                          | `https://api.openai.com/v1` |
+
+### Database Configuration
+
+| Variabel            | Deskripsi                                                        | Contoh                                                       |
+| ------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------ |
+| `DATABASE_USER`     | Nama pengguna untuk database PostgreSQL (digunakan oleh Docker). | `postgres`                                                   |
+| `DATABASE_PASSWORD` | Kata sandi untuk database PostgreSQL.                            | `password123`                                                |
+| `DATABASE_NAME`     | Nama database yang akan digunakan.                               | `recova_db`                                                  |
+| `DATABASE_URL`      | URL koneksi lengkap ke database PostgreSQL.                      | `postgresql://postgres:password123@localhost:5432/recova_db` |
+
+## Menjalankan Aplikasi
 
 ### Mode Development (Lokal)
 
@@ -98,7 +121,7 @@ npm run build
 npm start
 ```
 
-### 🌱 Database Seeding
+### Database Seeding
 
 Proyek ini dilengkapi dengan mekanisme _seeding_ untuk mengisi database dengan data awal untuk keperluan development dan testing.
 
@@ -120,7 +143,7 @@ Untuk menjalankan proses seeding, gunakan perintah:
 npm run db:seed
 ```
 
-## 🐳 Menjalankan dengan Docker
+## Menjalankan dengan Docker
 
 Proyek ini menyediakan konfigurasi Docker untuk mempermudah proses setup di lingkungan development dan deployment di production.
 
@@ -147,7 +170,7 @@ Buat file `.env.production` sebelum menjalankan di mode production.
 docker-compose -f docker-compose.yml up -d --build
 ```
 
-## 📜 Skrip NPM
+## Skrip NPM
 
 - `npm run dev` - Jalankan server development (hot reload).
 - `npm run build` - Build TypeScript ke JavaScript.
@@ -162,7 +185,7 @@ docker-compose -f docker-compose.yml up -d --build
 - `npm run db:studio` - Buka Prisma Studio.
 - `npm run db:seed` - Isi database dengan data awal (seeding).
 
-## 📂 Struktur Proyek
+## Struktur Proyek
 
 ```
 src/
@@ -179,7 +202,7 @@ src/
 ├── config/             # Konfigurasi (env, app settings)
 ├── core/               # Setup inti server Express
 ├── database/           # Konfigurasi Prisma & koneksi DB
-├── handler/          # Error handling & response standar
+├── handler/            # Error handling & response standar
 ├── middleware/         # Middleware kustom (auth, validation, dsb.)
 ├── routes/             # Routing API
 ├── types/              # Definisi tipe global (TypeScript)
@@ -187,7 +210,7 @@ src/
 └── views/              # Tampilan Views
 ```
 
-## 📡 Rute & Endpoint API
+## Rute & Endpoint API
 
 Semua endpoint berada di bawah prefix: **`/api/v1`**. Pengaturan rute utama terdapat di `src/routes/index.ts` yang menggabungkan semua modul API.
 
@@ -202,6 +225,7 @@ Semua endpoint berada di bawah prefix: **`/api/v1`**. Pengaturan rute utama terd
 
 - **`/api/v1/ai`**: Rute untuk fitur berbasis AI.
   - `POST /ask-coach` - Kirim pesan ke AI Coach.
+  - `GET /chat-history` - Ambil riwayat percakapan dengan AI Coach.
   - `GET /summary` - Dapatkan ringkasan check-in harian.
   - `POST /onboarding-analysis` - Analisis data onboarding.
 
@@ -226,7 +250,7 @@ Semua endpoint berada di bawah prefix: **`/api/v1`**. Pengaturan rute utama terd
 - **`/api/v1/content`**: Rute untuk konten dinamis.
   - `GET /daily` - Ambil konten harian.
 
-## 🤝 Kontribusi
+## Kontribusi
 
 Kontribusi terbuka untuk siapa saja.
 
@@ -236,6 +260,6 @@ Kontribusi terbuka untuk siapa saja.
 - Push ke branch (`git push origin feat/new-feature`)
 - Buat **Pull Request**
 
-## 📄 Lisensi
+## Lisensi
 
 Proyek ini dilisensikan di bawah lisensi [MIT](LICENSE).

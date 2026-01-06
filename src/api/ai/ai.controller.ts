@@ -1,5 +1,10 @@
 import type { Request, Response } from 'express';
-import { analyzeOnboardingAnswers, getCoachResponse, getLatestSummary } from './ai.service.js';
+import {
+  analyzeOnboardingAnswers,
+  findAllChatHistory,
+  getCoachResponse,
+  getLatestSummary,
+} from './ai.service.js';
 import { asyncHandler } from '../../handler/async.handler.js';
 import { errorResponse, successResponse } from '../../core/response.js';
 
@@ -20,6 +25,21 @@ export const askCoachHandler = asyncHandler(async (req: Request, res: Response) 
   return successResponse(res, 200, 'Respon AI Coach berhasil dibuat', {
     response: coachResponse,
   });
+});
+
+export const getChatHistoryHandler = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user?.id || req.body?.userId; // Temporary support for userId in body for testing purposes
+  if (!userId) {
+    return errorResponse(
+      res,
+      401,
+      'Tidak diizinkan',
+      'ID pengguna tidak ditemukan dalam permintaan'
+    );
+  }
+
+  const chatHistory = await findAllChatHistory(userId);
+  return successResponse(res, 200, 'Riwayat chat berhasil diambil', chatHistory);
 });
 
 export const getSummaryHandler = asyncHandler(async (req: Request, res: Response) => {
