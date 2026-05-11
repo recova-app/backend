@@ -1,5 +1,9 @@
 # Recova Backend API
 
+> Dokumen ini adalah arsip referensi runtime legacy (Node.js/Express) untuk kebutuhan historis/audit.
+> Runtime aktif repository ini adalah Go Fiber. Lihat sumber operasional aktif di:
+> [backend-v2](https://github.com/recova-app/backend-v2).
+
 Selamat datang di **Recova Backend API** 👋
 Proyek ini menyediakan layanan backend untuk aplikasi **Recova**, yang dirancang untuk membantu pengguna dalam perjalanan pemulihan dan pembentukan kebiasaan positif.
 
